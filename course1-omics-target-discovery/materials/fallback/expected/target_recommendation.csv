@@ -1,2 +1,2 @@
-rank,symbol,panel_class,known_drug_class,n_mutated,mutation_examples,compartment,approved_drug_status,targetable_alterations,deg_status,log2FoldChange,padj,baseMean
-1,EGFR,receptor_kinase,approved_or_clinical,2,p.E746_A750del; p.L858R,cell_surface,approved_in_luad,activating_snv_or_indel,not significant,-0.2059368771527136,0.5638075356621947,6405.123924404568
+rank,symbol,variant_function,compartment,n_mutated,mutation_examples,deg_status,log2FoldChange,padj,baseMean,known_drug_class,approved_drug_status,note
+1,EGFR,gain_of_function,cell_surface,2,p.E746_A750del; p.L858R,not significant,-0.2059368771527136,0.5638075356621947,6405.123924404568,approved_or_clinical,approved_in_luad,"RTK; the observed p.E746_A750del and p.L858R are textbook activating mutations (PMID 15118073, PMID 15118125), i.e. the protein is switched on in these tumours"

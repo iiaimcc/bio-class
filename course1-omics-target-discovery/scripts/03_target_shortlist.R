@@ -8,8 +8,9 @@
 #      mutation matrix built from the same TCGA-LUAD samples
 #   2. Intersects DEGs with the panel -> expression-driven candidates
 #   3. Lists mutated driver genes -> mutation-driven candidates
-#   4. Layers the evidence (mutated -> druggable -> cell surface -> clinical
-#      precedent) -> integrated_candidates.csv and target_recommendation.csv
+#   4. Applies the biology-only funnel (variant present -> protein switched on
+#      -> reachable by the large molecule we design in course 3) -> writes
+#      integrated_candidates.csv and target_recommendation.csv
 #   5. Prints the evidence for EGFR, which is the last one standing
 #
 # How to run:
@@ -94,59 +95,61 @@ mut_candidates <- mut_long %>%
 write_csv(mut_candidates, file.path(out_dir, "mutation_driven_candidates.csv"))
 cat("Saved mutation_driven_candidates.csv:", nrow(mut_candidates), "mutated genes\n")
 
-# ---- 5. Integrated evidence layers ---------------------------------------------
-# A candidate has to survive four questions, not one: does it carry a non-silent
-# variant in this cohort, is it in the druggable panel, can a large molecule
-# reach it (cell surface), and is there clinical precedent. The counts are
-# printed one layer at a time so the class can see what each filter costs.
-annot_file <- file.path(data_dir, "driver_annotation.csv")
-if (!file.exists(annot_file))
-  stop("Missing ", annot_file, " - pass the course1 data dir as the first argument")
-annot <- read_csv(annot_file, show_col_types = FALSE)
-
-# A candidate has to survive four questions, not one: does it carry a non-silent
-# variant in this cohort, is it in the druggable panel, can a large molecule
-# reach it (cell surface), and does the observed variant type match the
-# alteration an approved drug actually targets. The counts are printed one
-# layer at a time so the class can see what each filter costs.
+# ---- 5. Biology-only evidence layers -------------------------------------------
+# The funnel deliberately uses ONLY properties of the tumour and of the molecule:
+# does this gene carry a non-silent variant in this cohort, does that variant
+# switch the protein ON (gain of function), and is the protein somewhere a large
+# molecule can reach it. Drug-landscape facts (does an approved drug already
+# exist, is the gene in the druggable panel) are NOT filters: using them would
+# rebuild the answer we already know and call it a discovery. They are printed
+# afterwards, as precedent, in section 6.
 annot_file <- file.path(data_dir, "driver_annotation.csv")
 if (!file.exists(annot_file))
   stop("Missing ", annot_file, " - pass the course1 data dir as the first argument")
 annot <- read_csv(annot_file, show_col_types = FALSE)
 
 integrated <- mut_candidates %>%
-  left_join(panel %>% select(symbol, panel_class, known_drug_class), by = "symbol") %>%
+  left_join(panel %>% select(symbol, known_drug_class), by = "symbol") %>%
   left_join(annot, by = "symbol") %>%
-  mutate(in_druggable_panel = !is.na(panel_class),
+  mutate(on_druggable_panel = !is.na(known_drug_class),
          compartment = coalesce(compartment, "unannotated"),
+         variant_function = coalesce(variant_function, "unknown"),
          approved_drug_status = coalesce(approved_drug_status, "unknown"),
-         observed_variants_targetable = coalesce(observed_variants_targetable, "no")) %>%
-  arrange(desc(n_mutated), desc(in_druggable_panel), desc(log2FoldChange))
+         gain_of_function = variant_function == "gain_of_function",
+         reachable_by_large_molecule = compartment == "cell_surface") %>%
+  arrange(desc(n_mutated), desc(gain_of_function), desc(log2FoldChange))
 
+# Layer 3 encodes the modality we chose for course 3 (a designed mini-protein /
+# antibody-like binder), not a statement about target quality: an intracellular
+# protein is a perfectly good target if you are building a small molecule.
 final <- integrated %>%
-  filter(in_druggable_panel,
-         compartment == "cell_surface",
-         approved_drug_status == "approved_in_luad",
-         observed_variants_targetable == "yes") %>%
+  filter(gain_of_function, reachable_by_large_molecule) %>%
   mutate(rank = row_number()) %>%
-  select(rank, symbol, panel_class, known_drug_class, n_mutated, mutation_examples,
-         compartment, approved_drug_status, targetable_alterations,
-         deg_status, log2FoldChange, padj, baseMean)
+  select(rank, symbol, variant_function, compartment, n_mutated, mutation_examples,
+         deg_status, log2FoldChange, padj, baseMean, known_drug_class,
+         approved_drug_status, note)
 write_csv(integrated, file.path(out_dir, "integrated_candidates.csv"))
 cat("Saved integrated_candidates.csv:", nrow(integrated),
-    "mutated driver genes with panel / compartment annotation\n")
+    "mutated genes with variant-function and compartment annotation\n")
 write_csv(final, file.path(out_dir, "target_recommendation.csv"))
 cat("Saved target_recommendation.csv:", nrow(final), "recommended targets\n")
 
 # ---- 6. Console summary ---------------------------------------------------------
-cat("\n===== Evidence funnel (each layer costs candidates) =====\n")
-cat("  1. non-silent variant in this cohort :", nrow(integrated), "genes\n")
-cat("  2. + in druggable panel              :", sum(integrated$in_druggable_panel), "genes\n")
-cat("  3. + on the cell surface             :",
-    sum(integrated$in_druggable_panel & integrated$compartment == "cell_surface"), "genes\n")
-cat("  4. + variant matches approved drug   :", nrow(final), "gene(s)\n")
-cat("  expression-driven shortlist overlap  :",
+cat("\n===== Evidence funnel (biology only, each layer costs candidates) =====\n")
+cat("  1. non-silent variant in this cohort  :", nrow(integrated), "genes\n")
+cat("  2. + variant switches the protein ON  :", sum(integrated$gain_of_function), "genes\n")
+cat("  3. + reachable by a large molecule    :", nrow(final), "gene(s)\n")
+cat("  expression-driven shortlist overlap   :",
     sum(candidates$symbol %in% final$symbol), "genes\n")
+
+cat("\n---- Not part of the funnel: what the same data looks like for the other modality ----\n")
+small_mol <- integrated %>% filter(gain_of_function, compartment == "intracellular")
+cat("Switched-on AND intracellular (= small-molecule route):",
+    paste(small_mol$symbol, collapse = ", "), "\n")
+
+cat("\n---- Not part of the funnel: drug-landscape facts, printed as precedent only ----\n")
+print(integrated %>% filter(gain_of_function) %>%
+        select(symbol, compartment, variant_function, approved_drug_status, known_drug_class))
 
 cat("\n===== TOP expression-driven candidates (druggable, up-regulated) =====\n")
 print(head(candidates, 10))
@@ -154,7 +157,7 @@ print(head(candidates, 10))
 cat("\n===== Mutated genes among the driver list =====\n")
 print(mut_candidates, n = 20)
 
-cat("\n===== Recommended target(s) after all four layers =====\n")
+cat("\n===== Recommended target(s) after all three biology layers =====\n")
 print(final)
 
 cat("\n===== EGFR: the course target =====\n")
@@ -162,10 +165,11 @@ print(deg %>% filter(symbol == "EGFR") %>%
         select(symbol, baseMean, log2FoldChange, padj))
 print(mut_candidates %>% filter(symbol == "EGFR"))
 
-cat("\nEGFR is NOT among the expression-driven candidates. In this subset it is\n")
-cat("mutated in 2/15 tumours (exon 19 deletion and L858R), sits on the cell\n")
-cat("surface and already has approved drugs. The 78-gene shortlist and this\n")
-cat("four-layer funnel share no gene at all: that gap is the lesson, not a bug.\n")
-cat("RET and ROS1 also have approved drugs in LUAD, but those drugs target\n")
-cat("fusions, so the point mutations seen here do not make them actionable.\n")
-cat("Next step (course 2): inspect EGFR at protein/structure level.\n")
+cat("\nEGFR is NOT among the expression-driven candidates. Here it is mutated in\n")
+cat("2/15 tumours, both textbook activating events (exon 19 deletion, L858R),\n")
+cat("and it sits on the cell surface. The expression shortlist and this funnel\n")
+cat("share no gene at all: that gap is the lesson, not a bug.\n")
+cat("KRAS is switched on in 6/15 tumours too, but it works inside the cell, so\n")
+cat("the same data points a small-molecule programme at KRAS instead. Which\n")
+cat("gene wins depends on the modality you committed to, not on a ranking.\n")
+cat("Next step (course 2): inspect the recommended target at protein level.\n")

@@ -15,8 +15,8 @@ fallback/
     ├── reactome_enrichment.csv       # Reactome 富集结果（82 条）
     ├── target_shortlist.csv          # 表达驱动候选（78 个）
     ├── mutation_driven_candidates.csv# 突变驱动候选（9 个基因）
-    ├── integrated_candidates.csv     # 四层漏斗逐层结果（9 行）
-    ├── target_recommendation.csv     # 四层全过的综合推荐（EGFR，rank 1）
+    ├── integrated_candidates.csv     # 三层漏斗逐层结果（9 行）
+    ├── target_recommendation.csv     # 三层全过的综合推荐（EGFR，rank 1）
     ├── volcano_plot.png
     ├── go_bp_dotplot.png
     └── reactome_dotplot.png
@@ -38,9 +38,9 @@ fallback/
 | `mutation_matrix.csv` | `349412bd4b4f59e198ca8f7f4b352880b56862214314bf74fbacbe07527471b8` |
 | `sample_manifest.csv` | `98234d369cca5812523f21711fa135860d49409c06b3423d09379fbded30d1b4` |
 | `mutation_manifest.csv` | `cde2eeb3d544495c9d775d307d868457c3b392938cda7c04edf3ff610f38eefa` |
-| `driver_annotation.csv` | `2c183e2083fb8ebd1616e5ba6e85c8248c9d6a183a5c528079fe8fc8d1e245ab` |
+| `driver_annotation.csv` | `a47019098157dc0c57b44d97825ba84f6f89a681aff825a566d1f786a062be63` |
 
-压缩包本身：`2dc675ea946d099d9eca32dcca0fe4b0a9a1b4fb42c13e7049f1ee42b504bf3f`（2.3 MB，含 9 个文件：8 个数据文件 + `driver_annotation.csv`）。
+压缩包本身：`adfe4f2a92eae330177c31e32e2e3c3ac9ad95d1f4edd1a654da45c7cd93d383`（2.2 MB，含 9 个文件：8 个数据文件 + `driver_annotation.csv`）。
 
 与 `data/` 下的发布版逐字节一致；`python3 data/fetch_tcga_luad.py --verify-only` 可现场复核。
 

@@ -14,7 +14,7 @@
 | `mutation_matrix.csv` | 突变矩阵：14 例有 WXS 的肿瘤 × 14 个驱动基因（0/1） | 是 |
 | `sample_manifest.csv` | 30 个表达文件的 GDC file_id / md5 / 样本信息（下载脚本的输入清单） | 是 |
 | `mutation_manifest.csv` | 14 个 MAF 文件的 GDC file_id / md5 | 是 |
-| `driver_annotation.csv` | 14 个驱动基因的人工注释：亚细胞定位、获批药状态、可靶向的变异类型（融合/点突变/外显子跳跃）、本队列观察到的变异是否对得上 | 是 |
+| `driver_annotation.csv` | 14 个驱动基因的人工注释：亚细胞定位（`compartment`）、本队列所见变异的预期功能（`variant_function`：功能获得/功能缺失/意义未明）、获批药状态、可靶向的变异类型。**漏斗只用 `compartment` 与 `variant_function`；`approved_drug_status` 与可成药面板只作事后佐证打印，不参与筛选**——用"已有药"筛选是循环论证 | 是 |
 | `fetch_tcga_luad.py` | 下载 + 校验 + 合并脚本（纯 Python 标准库，联网时重建全部文件） | 是 |
 
 ## 数据来源与选择规则
@@ -57,7 +57,7 @@ python3 fetch_tcga_luad.py --out . --cache ./gdc_cache --verify-only
 | `mutation_matrix.csv` | `349412bd4b4f59e198ca8f7f4b352880b56862214314bf74fbacbe07527471b8` |
 | `sample_manifest.csv` | `98234d369cca5812523f21711fa135860d49409c06b3423d09379fbded30d1b4` |
 | `mutation_manifest.csv` | `cde2eeb3d544495c9d775d307d868457c3b392938cda7c04edf3ff610f38eefa` |
-| `driver_annotation.csv` | `2c183e2083fb8ebd1616e5ba6e85c8248c9d6a183a5c528079fe8fc8d1e245ab` |
+| `driver_annotation.csv` | `a47019098157dc0c57b44d97825ba84f6f89a681aff825a566d1f786a062be63` |
 
 ```bash
 sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_panel.csv \
@@ -83,8 +83,9 @@ sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_pa
 | 可成药面板 | 247 个基因 |
 | 表达驱动候选（shortlist） | 78 个，top5：TERT、HTR3A、TOP2A、CDKN2A、SLC6A3（EGFR 不在其中） |
 | 突变驱动候选 | 9 个基因：TP53 8、KRAS 6、STK11 3、RET 2、KEAP1 2、EGFR 2、SMARCA4/PIK3CA/ROS1 各 1 例 |
-| 四层证据漏斗 | 9（有突变）→ 6（可成药）→ 3（细胞表面）→ 1（变异类型匹配获批药）；表达候选与漏斗交集 0 |
-| 综合推荐（target_recommendation.csv） | EGFR，rank 1（RET/ROS1 的获批药针对融合、KRAS 位于细胞内，均在漏斗中被砍） |
+| 生物学三层漏斗 | 9（有非沉默突变）→ 2（变异把蛋白"打开"，功能获得）→ 1（大分子够得着：与课程三选定的大分子模态匹配）；表达候选与漏斗交集 0 |
+| 综合推荐（target_recommendation.csv） | EGFR，rank 1（TP53/STK11/KEAP1 为功能缺失；RET/ROS1/PIK3CA/SMARCA4 变异意义未明；KRAS 功能获得但位于细胞内） |
+| 对照分支（不进漏斗） | 同一份数据改做小分子，功能获得且位于胞内的答案是 KRAS（6/15）。**药物上市情况与文献可得性只作事后佐证，不作筛选条件**，否则是循环论证 |
 | GO BP 显著条目 | 1054（top：extracellular structure organization，159 基因；extracellular matrix organization 158） |
 | Reactome 显著条目 | 82（top：Extracellular matrix organization，138 基因） |
 | 数据缺口 | TCGA-05-4245-01A 无 MAF（14/15 例有突变数据）；MAF 不含扩增/融合 |
