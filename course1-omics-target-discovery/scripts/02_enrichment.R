@@ -4,11 +4,12 @@
 # Course: "Omics-based disease mechanism dissection and target discovery" (Part 2)
 #
 # What this script does:
-#   1. Reads the DEG list from 01_diff_analysis.R
+#   1. Reads the DEG table from 01_diff_analysis.R
 #   2. Maps gene symbols to Entrez IDs
-#   3. Runs GO (Biological Process) and KEGG pathway enrichment
-#      with clusterProfiler; KEGG needs internet, so it is wrapped to
-#      fall back gracefully if the network is unavailable.
+#   3. Runs GO (Biological Process) and Reactome pathway enrichment.
+#      Both use local annotation packages (org.Hs.eg.db, reactome.db),
+#      so the whole script works offline. KEGG is intentionally not used
+#      here: it needs a live REST download that many classroom networks block.
 #   4. Saves enrichment tables and dot plots
 #
 # How to run:
@@ -20,15 +21,21 @@ args <- commandArgs(trailingOnly = TRUE)
 data_dir <- if (length(args) >= 1) args[1] else "."
 out_dir  <- if (length(args) >= 2) args[2] else "./results"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
+# Annotation packages are local; keep a generous timeout anyway because the
+# first ReactomePA call can be slow while R builds the pathway index.
+options(timeout = 600)
 
 # ---- 0.5 Required packages ----------------------------------------------------
-for (p in c("clusterProfiler", "org.Hs.eg.db", "ggplot2", "dplyr", "readr")) {
+for (p in c("clusterProfiler", "org.Hs.eg.db", "ReactomePA", "reactome.db",
+            "ggplot2", "dplyr", "readr")) {
   if (!requireNamespace(p, quietly = TRUE))
     stop("Package '", p, "' is missing. Install it first, see 环境与部署指南.md")
 }
 suppressPackageStartupMessages({
   library(clusterProfiler)
   library(org.Hs.eg.db)   # loads the org.Hs.eg.db annotation object
+  library(ReactomePA)     # pathway enrichment
+  library(reactome.db)    # local Reactome annotation, no download needed
   library(ggplot2)
   library(dplyr)
   library(readr)
@@ -39,8 +46,11 @@ deg_file <- file.path(out_dir, "deg_table_all.csv")
 if (!file.exists(deg_file))
   stop("Missing ", deg_file, " - run 01_diff_analysis.R first (same <out_dir>)")
 deg <- read_csv(deg_file, show_col_types = FALSE)
-sig <- deg %>% filter(padj < 0.05, abs(log2FoldChange) > 1)
-cat("Using", nrow(sig), "significant DEGs for enrichment\n")
+sig <- deg %>%
+  filter(padj < 0.05, abs(log2FoldChange) > 1,
+         !is.na(symbol), symbol != "") %>%
+  distinct(symbol, .keep_all = TRUE)
+cat("Using", nrow(sig), "unique significant DEG symbols for enrichment\n")
 
 # ---- 2. Symbol -> Entrez ID mapping ------------------------------------------
 entrez <- bitr(sig$symbol, fromType = "SYMBOL", toType = "ENTREZID",
@@ -65,41 +75,45 @@ cat("GO enrichment terms:", nrow(ego_df), "\n")
 
 if (nrow(ego_df) > 0) {
   p_go <- dotplot(ego, showCategory = 15) +
-    ggtitle("GO Biological Process enrichment (DEGs)")
+    ggtitle("GO Biological Process enrichment (TCGA-LUAD DEGs)")
   ggsave(file.path(out_dir, "go_bp_dotplot.png"), p_go,
          width = 9, height = 7, dpi = 300)
   cat("Saved GO dotplot\n")
 }
 
-# ---- 4. KEGG pathway enrichment (needs internet; tolerant to failure) ---------
-kegg_ok <- TRUE
-ekegg <- tryCatch({
-  enrichKEGG(gene = entrez$ENTREZID, organism = "hsa",
-             pvalueCutoff = 0.1, qvalueCutoff = 0.1)
-}, error = function(e) {
-  message("KEGG enrichment failed (network?): ", conditionMessage(e))
-  kegg_ok <<- FALSE
-  NULL
-})
+# ---- 4. Reactome pathway enrichment (offline, via reactome.db) ----------------
+ereact <- enrichPathway(
+  gene          = entrez$ENTREZID,
+  organism      = "human",
+  pvalueCutoff  = 0.05,
+  qvalueCutoff  = 0.05,
+  readable      = TRUE
+)
+react_df <- as.data.frame(ereact)
+write_csv(react_df, file.path(out_dir, "reactome_enrichment.csv"))
+cat("Reactome terms:", nrow(react_df), "\n")
 
-if (kegg_ok && !is.null(ekegg) && nrow(as.data.frame(ekegg)) > 0) {
-  kk_df <- as.data.frame(ekegg)
-  write_csv(kk_df, file.path(out_dir, "kegg_enrichment.csv"))
-  p_kegg <- dotplot(ekegg, showCategory = 15) +
-    ggtitle("KEGG pathway enrichment (DEGs)")
-  ggsave(file.path(out_dir, "kegg_dotplot.png"), p_kegg,
+if (nrow(react_df) > 0) {
+  p_react <- dotplot(ereact, showCategory = 15) +
+    ggtitle("Reactome pathway enrichment (TCGA-LUAD DEGs)")
+  ggsave(file.path(out_dir, "reactome_dotplot.png"), p_react,
          width = 9, height = 7, dpi = 300)
-  cat("KEGG enrichment terms:", nrow(kk_df), "\n")
-} else {
-  cat("KEGG step skipped (see message above). Alternative: use the public web\n")
-  cat("service Enrichr (https://maayanlab.cloud/Enrichr) with the DEG list.\n")
+  cat("Saved Reactome dotplot\n")
 }
 
 # ---- 5. Console summary -------------------------------------------------------
 cat("\n===== Top 15 GO terms =====\n")
 if (nrow(ego_df) > 0) {
-  print(ego_df %>% arrange(p.adjust) %>% select(ID, Description, Count, p.adjust) %>% head(15))
+  print(ego_df %>% arrange(p.adjust) %>%
+          select(ID, Description, Count, p.adjust) %>% head(15))
 }
+cat("\n===== Top 15 Reactome pathways =====\n")
+if (nrow(react_df) > 0) {
+  print(react_df %>% arrange(p.adjust) %>%
+          select(ID, Description, Count, p.adjust) %>% head(15))
+}
+cat("\nAlternative online enrichment services (if local packages are missing):\n")
+cat("Enrichr https://maayanlab.cloud/Enrichr , KEGG https://www.kegg.jp\n")
 
 # Save the DEG symbol list for step 3 (target shortlist)
 write_lines(sig$symbol, file.path(out_dir, "deg_symbols.txt"))

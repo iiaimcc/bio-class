@@ -6,7 +6,7 @@
 
 | 课程 | 课时 | 核心问题 | 主要工具 | 随堂产出 |
 |---|---|---|---|---|
-| 课程一《基于组学的致病机制解析与靶点发现实践》 | 4 学时 | 从组学数据中找到"哪个基因值得做成药靶点" | RStudio（云电脑）、Enrichr/GEPIA2 网页端（备选） | 差异基因火山图、富集结果、候选靶点报告 |
+| 课程一《基于组学的致病机制解析与靶点发现实践》 | 4 学时 | 从真实组学数据中找到"哪个基因值得做成药靶点" | RStudio（云电脑）、GDC 数据门户、Enrichr/GEPIA2 网页端（备选） | 差异基因火山图、富集结果、突变证据、候选靶点报告 |
 | 课程二《靶点确证与结构预测实践》 | 4 学时 | 从序列到结构，靶点的结构证据是否成立 | UniProt、AlphaFold DB、PDB、PyMOL | 靶蛋白结构档案（结构域、口袋、关键残基） |
 | 课程三《人工智能大分子药物设计实践》 | 4 学时 | 从实验表位约束出发设计新的 mini-protein binder | RFdiffusion/ColabDesign、ProteinMPNN、ColabFold或在线Boltz、PyMOL、PDB（1YY9） | 界面约束表、backbone筛选、序列候选、回折复核、实验验证计划 |
 
@@ -16,13 +16,13 @@
 
 ```mermaid
 flowchart LR
-    A[课程一<br/>组学差异表达<br/>LUAD vs 正常] --> B[候选靶点<br/>EGFR 等激酶]
+    A[课程一<br/>真实 TCGA-LUAD<br/>7283 DEG + 突变证据] --> B[候选靶点<br/>EGFR 等激酶]
     B --> C[课程二<br/>结构域/AlphaFold/PDB<br/>口袋与关键残基]
     C --> D[课程三<br/>大分子设计<br/>抗体复合物预测+突变]
     D --> E[综合大作业<br/>三课成果整合为<br/>大分子设计方案书]
 ```
 
-- 课程一分析一组模拟/公开的肺腺癌转录组数据，筛出以 EGFR 为首的候选激酶靶点；
+- 课程一用真实 TCGA-LUAD 子集（15 肿瘤 vs 15 癌旁）做差异表达 + 通路富集 + 突变证据整合；EGFR 的表达并不显著，它靠 2/15 例激活突变（19del、L858R）进入候选名单——这本身就是课程的关键判断训练；
 - 课程二对 EGFR 做序列注释、AlphaFold 结构评估、基于 PDB 结合模式的相互作用分析；
 - 课程三面向 EGFR 胞外 domain III：以西妥昔单抗-抗原结构 1YY9 提取表位约束 → 在线 RFdiffusion 生成 mini-protein backbone → ProteinMPNN 设计序列 → ColabFold/在线 Boltz 回折复核 → 写出实验验证计划（小分子对接不属本课）。
 
@@ -41,8 +41,8 @@ flowchart LR
 ```
 bio-class/
 ├── README.md                        # 本文件
-├── data/                            # 三门课共享的课程数据
-│   └── make_synthetic_expression.py # 合成表达数据生成脚本（纯 Python 标准库）
+├── data/                            # 三门课共享的课程数据（真实 TCGA-LUAD 子集）
+│   └── fetch_tcga_luad.py           # 从 GDC 下载 + md5 校验 + 合并（纯 Python 标准库）
 ├── docs/
 │   ├── 环境与部署指南.md            # 云电脑预装清单、网络白名单、账号管理、备选方案
 │   ├── 考核方案.md                  # 随堂小作业 + 综合大作业评分细则
@@ -62,20 +62,20 @@ bio-class/
 | 教师准备清单.md | 课前一周 / 课前一天 / 课前半小时的检查项 |
 | data 或 materials/ | 本课专用数据集、PDB、序列文件、在线服务链接、输入模板和预生成兜底结果 |
 
-课程二、课程三的 `materials/` 下另有 `fallback/`：
+三门课的 `materials/fallback/`：
 
-- `fallback/inputs/`：与线上同源的原始文件（UniProt/PDB/AlphaFold DB），附 URL、抓取日期与 `sha256`。课上仍由学生现场下载，这里只接住网络失败；
+- `fallback/inputs/`：与线上同源的原始文件（课程一为 GDC 数据包，课程二为 UniProt/PDB/AlphaFold DB 文件），附 URL、抓取日期与 `sha256`。课上仍由学生现场下载，这里只接住网络失败；
 - `fallback/expected/`：各步骤的参考输出（结构事实、界面残基、pLDDT 分区），供学生自查与教师判分，不是可直接抄写的答案；
 - `fallback/README.md`：目录说明、校验值和使用规则；课程三在线设计的 `design_out/`、`boltz_out/` 需教师按 runbook 实际生成，当前仅为占位。
 
 ## 快速开始（给授课教师）
 
 1. 通读 [docs/环境与部署指南.md](docs/环境与部署指南.md)，对照完成云电脑软件预装与账号准备；
-2. 在云电脑上跑一遍 `data/make_synthetic_expression.py` 生成课程数据，并按各课《教师准备清单》完成自查运行；
+2. 备好课程数据（真实数据，两种方式）：`python3 data/fetch_tcga_luad.py --out <课程目录>` 现场重建，或直接用仓库 `data/` 下的发布版 + `course1-*/materials/fallback/inputs/`；再按各课《教师准备清单》完成自查运行；
 3. 按每课《讲义大纲.md》制作课件（课程包中已含全部素材与脚本）；
 4. 课上让学生打开《实操手册-学生版.md》逐步完成，教师按《教案.md》节奏把控时间；
 5. 课后按 [docs/考核方案.md](docs/考核方案.md) 收取随堂产出与综合大作业。
 
 ## 版权与许可说明
 
-教学示例数据为模拟生成（基于公开肿瘤表达数据的统计特征构造，不包含任何真实患者信息）；课程中引用的公开数据库（TCGA、GEO、GTEx、UniProt、PDB、AlphaFold DB）均遵循其各自的使用条款，引用时注明来源。药品与化合物信息仅用于教学演示。
+课程一使用 TCGA-LUAD（NCI GDC 公开层，去标识化，不含可识别患者信息），下载与合并脚本见 `data/fetch_tcga_luad.py`；课程二、三使用 UniProt、RCSB PDB、AlphaFold DB 与 IMGT 的公开数据。以上数据库均遵循其各自的使用条款，引用时注明来源（如 "TCGA Research Network, https://www.cancer.gov/tcga"）。药品与化合物信息仅用于教学演示。

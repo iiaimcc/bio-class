@@ -1,68 +1,96 @@
 # 课程数据说明（data/）
 
-本目录存放三门课程共用的示例数据，全部由 `make_synthetic_expression.py` 生成。
+本目录存放三门课程共用的**真实公开数据**：TCGA-LUAD（肺腺癌）的一个小子集，来自 NCI Genomic Data Commons（GDC）。数据已去标识化、公开可再分发，不含可识别的患者信息。
 
 ## 文件清单
 
 | 文件 | 内容 | 学生可见 |
 |---|---|---|
-| `expression_matrix.csv` | 表达计数矩阵：10000 基因 × 12 样本（整数 counts） | 是 |
-| `sample_meta.csv` | 样本注释：S01–S06 Normal，S07–S12 Tumor；两批次 B1/B2 | 是 |
-| `gene_annotation.csv` | 基因注释：symbol、模拟 Ensembl ID、染色体、基因类型（protein_coding/lncRNA）、是否真值差异基因 | 是 |
-| `druggable_panel.csv` | 可成药基因面板（247 个常见药物靶点基因，含类别标注） | 是 |
-| `ground_truth_deg.csv` | **教师专用**真值表：真正的差异基因与 log2FC（不发给学生） | 否 |
-| `make_synthetic_expression.py` | 数据生成脚本（纯 Python 标准库，可重复生成） | 是（供复现教学） |
+| `expression_matrix.csv` | 表达计数矩阵：60660 基因 × 30 样本（GDC STAR-Counts，unstranded 整数 counts） | 是 |
+| `sample_meta.csv` | 样本注释：`sample_id, case_id, condition, sample_type, tss`；Tumor 15 / Normal 15 | 是 |
+| `gene_annotation.csv` | 基因注释：Ensembl gene_id、symbol、gene_type | 是 |
+| `druggable_panel.csv` | 可成药基因面板（247 个常见药物靶点基因，含 `panel_class`、`known_drug_class`） | 是 |
+| `mutation_status.csv` | 突变长表：每行一个非沉默变异（gene、variant_class、hgvsp、chr、pos） | 是 |
+| `mutation_matrix.csv` | 突变矩阵：14 例有 WXS 的肿瘤 × 14 个驱动基因（0/1） | 是 |
+| `sample_manifest.csv` | 30 个表达文件的 GDC file_id / md5 / 样本信息（下载脚本的输入清单） | 是 |
+| `mutation_manifest.csv` | 14 个 MAF 文件的 GDC file_id / md5 | 是 |
+| `fetch_tcga_luad.py` | 下载 + 校验 + 合并脚本（纯 Python 标准库，联网时重建全部文件） | 是 |
 
-## 数据设计（教学意图）
+## 数据来源与选择规则
 
-- 模拟"肺腺癌（LUAD）vs 正常"研究：12 个样本、约 10000 基因；
-- 约 3%（300 个）真值差异基因，其中 EGFR/MAPK 信号通路核心基因（EGFR、KRAS、BRAF、MAPK1、VEGFA、MYC、AKT1 等）为上调主力，少数肿瘤抑制基因（PTEN、CDKN1A 等）下调；
-- 真值差异基因中 36 个与可成药面板重合，按本课阈值实际检出约 18 个候选；EGFR 作为三课联动的主靶点被固定为强上调（真值 log2FC = 3.5、高基线表达），不依赖随机抽样是否"抽中"；
-- 库深度与批次效应如实模拟（不同样本总 reads 不同、B1/B2 倍数差异），供教学演示"为什么需要归一化"；
-- 包含约 1200 个低表达 lncRNA 类基因（部分零计数），贴近真实转录组的"寂静基因"现象；
-- 数据为**统计合成**，不包含任何真实患者信息；统计特征参照公开肿瘤转录组文献（TCGA/LUAD）构造。
+- 项目：TCGA-LUAD（The Cancer Genome Atlas, Lung Adenocarcinoma）；
+- 数据类型：RNA-Seq，分析流程 STAR - Counts（`*_star_gene_counts.tsv`），样本类型 Primary Tumor 与 Solid Tissue Normal，各取 15 例，来自不同患者（非配对设计）；
+- 突变数据：Masked Somatic Mutation（MAF，`gdc-2.0.0-aliquot-merged-masked`），按同一批肿瘤取全部 MAF 文件；
+- 选择规则写在 `fetch_tcga_luad.py --help` 与脚本注释里；`sample_manifest.csv` / `mutation_manifest.csv` 把 file_id 锁死，保证任何人重建得到同一批样本；
+- 30 例不是随机抽的：脚本在锁定 ml3xxxx 系列文件后手工剔除了 3 个过大/异常样本，最终这 30 例覆盖 15 个不同 TSS、包含 EGFR 激活突变（19del 与 L858R 各 1 例）。
+
+## 为什么用真实数据
+
+- 课上教的每一步（库深度差异、低表达过滤、多重检验、富集背景集、突变 vs 表达）都是真实数据里真实存在的问题，不需要"人为制造麻烦"；
+- 结论可以被外部核查：任何人拿同样的 GDC 文件重跑，应该得到同一批数；
+- 隐私：TCGA 数据已去标识化并获准公开再分发（GDC Data Use Certification 下的公开层）。学生作品里引用具体样本编号（如 TCGA-05-XXXX）没有问题，但不能写成"我们医院的患者"。
 
 ## 复现
 
 ```bash
-python3 make_synthetic_expression.py            # 输出到仓库 data/（脚本所在目录，默认值）
-python3 make_synthetic_expression.py -o /tmp/d  # 输出到指定目录
+# 完整重建（约 130 MB，需要能访问 api.gdc.cancer.gov，通常 3~8 分钟）
+python3 fetch_tcga_luad.py --out . --cache ./gdc_cache
+
+# 只校验已有文件是否与发布版一致
+python3 fetch_tcga_luad.py --out . --cache ./gdc_cache --verify-only
 ```
 
-脚本使用固定随机种子（`SEED = 20260901`），且所有随机抽样都走同一个 `random.Random(SEED)` 实例；在任意机器上重复运行，输出逐字节一致。本目录内的 CSV 就是该脚本的发布版本，可用于期末核验学生是否复现。
+脚本对每个文件校验 md5（来自 manifest），全部通过后才合并 CSV；已下载且 md5 正确的文件会被缓存复用。
 
-**发布版本校验值**（`python3 make_synthetic_expression.py` 后应为同一组值）：
+**发布版本校验值**（`sha256sum` 应得同一组值）：
 
 | 文件 | SHA256 |
 |---|---|
-| `expression_matrix.csv` | `0d5d33c9a4dbcc19dd0fff0c3c1e449b53a2c0216647b0088ba22a6281ca42ba` |
-| `sample_meta.csv` | `61131f21b10ffd85d8fa53194a6b103b00c8b0601866220b9fe02ee69213f500` |
-| `gene_annotation.csv` | `b717fc8177af3db4d9ee81b82e745b0efc3a6fa90f2a4aead48a969afe441189` |
+| `expression_matrix.csv` | `1da1bdca79bba6787bc69b9dfb1eafc3431b4a95928697871069342c9109c576` |
+| `sample_meta.csv` | `e9826e41c85b9cd7d68613c74c96452e4e18548690f0f2532d92991d155cb1fd` |
+| `gene_annotation.csv` | `32c0c37fad1edffe8c0cf138a18ba6937dd52f7dad23e260021d3ef5ed987713` |
 | `druggable_panel.csv` | `b8e19d1bc2ba67f7b11e93eb94b02b5b337166e31a540feaf2eb9deb23494d6b` |
-| `ground_truth_deg.csv` | `48cd067ce75bdd881776285ea7fb78e3978f31c0c194258be60356dfc424567b` |
+| `mutation_status.csv` | `f7caf3facb1c150dff8f48bc7853f1f8bbf785abdd7d5f9d06d63dc90b8d31a2` |
+| `mutation_matrix.csv` | `349412bd4b4f59e198ca8f7f4b352880b56862214314bf74fbacbe07527471b8` |
+| `sample_manifest.csv` | `98234d369cca5812523f21711fa135860d49409c06b3423d09379fbded30d1b4` |
+| `mutation_manifest.csv` | `cde2eeb3d544495c9d775d307d868457c3b392938cda7c04edf3ff610f38eefa` |
 
 ```bash
-sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_panel.csv ground_truth_deg.csv
+sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_panel.csv \
+          mutation_status.csv mutation_matrix.csv sample_manifest.csv mutation_manifest.csv
 ```
 
-> 注意：脚本改动（例如换主题、调整通路基因）会改变输出和所有教学基准。修改后必须重跑三份 R 脚本，并同步更新《实操手册》《教师准备清单》《讲义大纲》《教案》《课堂讲义》中的数字。
+> 注意：改样本数、换样本或改注释版本都会改变输出和所有教学基准（DEG 数、富集条目数、候选数）。修改后必须重跑三份 R 脚本，并同步更新《实操手册》《教师准备清单》《讲义大纲》《教案》《课堂讲义》和 [docs/课程包自检结果.md](../docs/课程包自检结果.md) 中的数字。
 
-## 当前发布版本的教学基准
+## 断网兜底
+
+`course1-omics-target-discovery/materials/fallback/inputs/` 存放同一份数据的压缩副本与学生结果参考（含 SHA256），供机房网络不可用时解压使用。详见该目录的 README。
+
+## 教学基准（发布版实测）
 
 | 项目 | 值 |
 |---|---|
-| 显著 DEG（padj<0.05, \|log2FC\|>1） | 116（上调 76 / 下调 40） |
-| EGFR（完整差异表，按 padj） | rank 2，log2FC ≈ 3.51 |
+| counts 维度 | 60660 × 30 |
+| 低表达过滤后（≥6 样本 counts≥10） | 23765 |
+| 显著 DEG（padj<0.05, \|log2FC\|>1） | 7283（上调 4355 / 下调 2928） |
+| EGFR 表达 | log2FC ≈ -0.21；padj ≈ 0.56（**不显著**） |
+| EGFR 突变 | 2/15 例激活突变：E746_A750del、L858R |
 | 可成药面板 | 247 个基因 |
-| shortlist 候选 | 18 个；EGFR 按 log2FC 排 rank 1 |
-| shortlist top5 | EGFR、BRAF、MAPK3、TSC2、PIK3R1 |
+| 表达驱动候选（shortlist） | 78 个，top5：TERT、HTR3A、TOP2A、CDKN2A、SLC6A3（EGFR 不在其中） |
+| 突变驱动候选 | 9 个基因：TP53 8、KRAS 6、STK11 3、RET 2、KEAP1 2、EGFR 2、SMARCA4/PIK3CA/ROS1 各 1 例 |
+| GO BP 显著条目 | 1054（top：extracellular matrix organization，159 基因） |
+| Reactome 显著条目 | 82（top：Extracellular matrix organization，138 基因） |
+| 数据缺口 | TCGA-05-4245-01A 无 MAF（14/15 例有突变数据）；MAF 不含扩增/融合 |
+
+> 上面每个值都由 `docs/课程包自检结果.md` 记录的运行环境实测得到；改动数据或脚本后必须重算。
 
 ## 数据替换指南（换主题）
 
-如需换疾病/靶点主题（例如乳腺癌 EZH2、炎症 JAK2），修改脚本中三处即可：
+本数据是直接用 GDC 官方文件重建的，不依赖手工编造，换主题只需改选择规则：
 
-1. `EGFR_PATHWAY` / `DOWN_PATHWAY` 列表换成新主题的通路基因；
-2. 把新主题的核心靶基因加入 `ONCO_SIGNAL` 或新增一个列表并注册到 `assign_differential_genes`；
-3. 重新生成数据后，**务必重跑三份 R 脚本**，确认新核心靶点进入候选 top10（先看真值表再定学生预期）。
+1. 修改 `fetch_tcga_luad.py` 里的项目 ID（例如 `TCGA-HNSC`）与样本筛选条件，或直接换掉 `sample_manifest.csv` 里的 file_id；
+2. 调整 `druggable_panel.csv`（可按 Open Targets / DGIdb 重新整理面板类别）；
+3. 突变基因列表（脚本里的驱动基因白名单）按新主题调整；
+4. 重新生成数据后**务必重跑三份 R 脚本**，并按新的实测值更新所有文档中的基准数字（清单见上一节）。
 
-> 提示：`druggable_panel.csv` 基于常见药物靶点基因整理，换主题时优先从面板内选"核心靶点"（如单抗/生物药已有临床应用记录的靶基因），保证课程三大分子设计案例（抗体-抗原为例）仍可衔接。
+> 换主题会影响三课衔接：课程二/三的结构与设计案例围绕 EGFR，换主题时需要同时替换晶体结构（1M17/1YY9）与抗体案例。

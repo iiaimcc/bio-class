@@ -1,13 +1,31 @@
-sample_id,condition,batch
-S01,Normal,B1
-S02,Normal,B1
-S03,Normal,B2
-S04,Normal,B2
-S05,Normal,B1
-S06,Normal,B2
-S07,Tumor,B1
-S08,Tumor,B1
-S09,Tumor,B2
-S10,Tumor,B2
-S11,Tumor,B1
-S12,Tumor,B2
+sample_id,case_id,condition,sample_type,tss
+TCGA-62-A471-01A,0075437e-ba1a-46be-86d6-9773209a2b5e,Tumor,Primary Tumor,62
+TCGA-67-3773-01A,009be09b-f9f6-43b7-8f45-4a648f8123ce,Tumor,Primary Tumor,67
+TCGA-NJ-A7XG-01A,01e9888d-b5b9-48f1-8ba6-8a89af108a04,Tumor,Primary Tumor,NJ
+TCGA-91-6848-01A,0232d299-4cdf-4fd7-9a5e-8d13c208b40c,Tumor,Primary Tumor,91
+TCGA-86-6851-01A,035c0b2b-c722-443b-8962-db4ee92c7532,Tumor,Primary Tumor,86
+TCGA-73-4677-01A,03c3409a-9d16-41d0-9e26-f9fc2547a4c8,Tumor,Primary Tumor,73
+TCGA-05-4245-01A,03d09c05-49ab-4ba6-a8d7-e7ccf71fafd2,Tumor,Primary Tumor,05
+TCGA-78-7540-01A,05534064-8b43-4c82-95da-70fd83bd6560,Tumor,Primary Tumor,78
+TCGA-55-7576-01A,055e9a43-3c00-4110-a303-e4407676bec0,Tumor,Primary Tumor,55
+TCGA-55-8615-01A,06fe7f3e-4edd-4150-981c-93787ea19b39,Tumor,Primary Tumor,55
+TCGA-49-4501-01A,0780eb43-d5b5-4c3d-9825-beacba5cc723,Tumor,Primary Tumor,49
+TCGA-86-7954-01A,079ae0b3-b64b-4b8e-ab7d-225b8046568c,Tumor,Primary Tumor,86
+TCGA-49-4505-01A,088edf89-d2b5-40c7-b066-df3bd383f7ea,Tumor,Primary Tumor,49
+TCGA-97-8177-01A,09078761-1c14-4d01-8e15-535c19a9b0f9,Tumor,Primary Tumor,97
+TCGA-J2-A4AD-01A,096bd95f-9900-4db2-b1c4-103902c3b31f,Tumor,Primary Tumor,J2
+TCGA-55-6986-11A,028e99e9-5b9a-4954-bb6e-6d4709a3cea8,Normal,Solid Tissue Normal,55
+TCGA-44-2655-11A,07b5663f-9a54-4462-b6c1-6fc8116b8714,Normal,Solid Tissue Normal,44
+TCGA-55-6981-11A,0a45f302-5748-48f3-9dc9-66c01843a68e,Normal,Solid Tissue Normal,55
+TCGA-91-6836-11A,0b31dbdf-0623-48e4-a0ec-017650dceda7,Normal,Solid Tissue Normal,91
+TCGA-44-6146-11A,0c0b610e-fe4c-406d-a5ed-5cc3b11dabf5,Normal,Solid Tissue Normal,44
+TCGA-38-4625-11A,0ea4920f-f4c8-4590-84b3-eb419824e144,Normal,Solid Tissue Normal,38
+TCGA-50-5935-11A,100430c8-1446-45c8-af36-b6dbb3ddd0c1,Normal,Solid Tissue Normal,50
+TCGA-50-5939-11A,12b79b4f-c28c-418e-a1e7-e622f33fdcc2,Normal,Solid Tissue Normal,50
+TCGA-50-5931-11A,12ccd581-a921-41bc-bcee-4e9be54532cc,Normal,Solid Tissue Normal,50
+TCGA-91-6829-11A,1427cd18-5ad3-491a-9981-908e31ae49db,Normal,Solid Tissue Normal,91
+TCGA-49-6744-11A,15340dd3-84ae-49fb-989a-eb212f3e73da,Normal,Solid Tissue Normal,49
+TCGA-73-4676-11A,195a5afb-b79f-44d2-9d12-884487630c2b,Normal,Solid Tissue Normal,73
+TCGA-38-4626-11A,2079155a-d91d-4246-a038-01934a580f32,Normal,Solid Tissue Normal,38
+TCGA-49-6742-11A,21fb46f9-4bbb-441c-af19-a687e9138344,Normal,Solid Tissue Normal,49
+TCGA-44-6144-11A,22302e92-fdfa-462a-9249-efdaa26ee5ed,Normal,Solid Tissue Normal,44
