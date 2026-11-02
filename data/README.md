@@ -33,7 +33,8 @@
 ## 复现
 
 ```bash
-# 完整重建（约 130 MB，需要能访问 api.gdc.cancer.gov，通常 3~8 分钟）
+# 完整重建（30 个文件 / 约 128 MB，需要能访问 api.gdc.cancer.gov；本机实测首次约 13 分钟，
+# 受出口带宽影响可能更久，机房上课请用共享缓存或兜底副本）
 python3 fetch_tcga_luad.py --out . --cache ./gdc_cache
 
 # 只校验已有文件是否与发布版一致
@@ -41,6 +42,7 @@ python3 fetch_tcga_luad.py --out . --cache ./gdc_cache --verify-only
 ```
 
 脚本对每个文件校验 md5（来自 manifest），全部通过后才合并 CSV；已下载且 md5 正确的文件会被缓存复用。
+`--verify-only` 只报告脚本重建的 5 个 CSV（expression / gene_annotation / sample_meta / mutation_status / mutation_matrix）；`druggable_panel.csv` 是人工整理的面板、两个 manifest 是输入清单，都不在重建范围内，用下面的 `sha256sum` 逐个人工核对。
 
 **发布版本校验值**（`sha256sum` 应得同一组值）：
 
