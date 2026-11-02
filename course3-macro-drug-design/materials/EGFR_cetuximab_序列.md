@@ -54,6 +54,9 @@ DILLTQSPVILSVSPGERVSFSCRASQSIGTNIHWYQQRTNGSPRLLIKYASESISGIPSRFSGSGSGTDFTLSINSVES
 
 > 抗体序列来自 1YY9 SEQRES（晶体中 C 链缺 212–213、D 链缺 221，均在恒定区，不影响 VH/VL）。
 > 保留"残基编号→序列位置"对照：VH 第 n 位 = 链 D `resi n`；VL 第 n 位 = 链 C `resi n`。
+>
+> **EGFR domain III 的序列与晶体坐标有一处单点差异**：UniProt canonical 498 位是 S，1YY9 SEQRES（PDB 474）是 K。
+> 序列输入用 UniProt canonical（上表）；与 1YY9 做结构比对时以 PDB 坐标为准，不要按序列去改晶体文件。
 
 ## 5. 常见错误
 
