@@ -9,12 +9,12 @@
 | `expression_matrix.csv` | 表达计数矩阵：60660 基因 × 30 样本（GDC STAR-Counts，unstranded 整数 counts） | 是 |
 | `sample_meta.csv` | 样本注释：`sample_id, case_id, condition, sample_type, tss`；Tumor 15 / Normal 15 | 是 |
 | `gene_annotation.csv` | 基因注释：Ensembl gene_id、symbol、gene_type | 是 |
-| `druggable_panel.csv` | 可成药基因面板（247 个常见药物靶点基因，含 `panel_class`、`known_drug_class`） | 是 |
+| `druggable_panel.csv` | 可成药基因面板（247 个常见药物靶点基因，含 `panel_class`、`known_drug_class`）。**`panel_class` 是维护者的粗分类、个别条目标注不严谨（如 TOP2A 归入 pharma_gpcr_enzymes），只用于浏览检索，不能作为生物学判断依据**；定位/靶点类别以 `driver_annotation.csv`、UniProt 为准 | 是 |
 | `mutation_status.csv` | 突变长表：每行一个非沉默变异（gene、variant_class、hgvsp、chr、pos） | 是 |
 | `mutation_matrix.csv` | 突变矩阵：14 例有 WXS 的肿瘤 × 14 个驱动基因（0/1） | 是 |
 | `sample_manifest.csv` | 30 个表达文件的 GDC file_id / md5 / 样本信息（下载脚本的输入清单） | 是 |
 | `mutation_manifest.csv` | 14 个 MAF 文件的 GDC file_id / md5 | 是 |
-| `driver_annotation.csv` | 14 个驱动基因的人工注释：亚细胞定位、获批药状态、可靶向的变异类型、本队列变异是否对得上 | 是 |
+| `driver_annotation.csv` | 14 个驱动基因的人工注释：亚细胞定位、获批药状态、可靶向的变异类型（融合/点突变/外显子跳跃）、本队列观察到的变异是否对得上 | 是 |
 | `fetch_tcga_luad.py` | 下载 + 校验 + 合并脚本（纯 Python 标准库，联网时重建全部文件） | 是 |
 
 ## 数据来源与选择规则
