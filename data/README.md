@@ -25,7 +25,7 @@
 ## 复现
 
 ```bash
-python3 make_synthetic_expression.py            # 输出到本目录（默认 ../data）
+python3 make_synthetic_expression.py            # 输出到仓库 data/（脚本所在目录，默认值）
 python3 make_synthetic_expression.py -o /tmp/d  # 输出到指定目录
 ```
 

@@ -1,7 +1,9 @@
 # pymol_interface_commands.pml - course 3 interface analysis on 1YY9
 # Teacher: verify chain ids first (1YY9: A=EGFR ectodomain, C=Fab light, D=Fab heavy;
 # B/E/F/G are N-glycan chains, not protein).
-# Usage: run in PyMOL after `load 1YY9.pdb` (or @this file inside a session).
+# Usage: run in PyMOL with 1YY9.pdb in the current directory (the file students
+# download in task 0), or after `load 1YY9.pdb`; teacher demo copy is in
+# materials/fallback/inputs/1YY9.pdb.
 # CDR ranges below are IMGT, converted to PDB resi (see CDR标注表.md).
 
 # ---- setup ----

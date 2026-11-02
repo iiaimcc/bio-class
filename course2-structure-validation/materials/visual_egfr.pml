@@ -1,6 +1,7 @@
 # visual_egfr.pml - teacher demo script (course 2, task card 3)
 # Run in PyMOL:   @visual_egfr.pml
-# Requires: 1M17.pdb loaded OR run from the materials directory.
+# Requires 1M17.pdb in the current directory (the file students download in task 1).
+# Teacher demo: copy it from materials/fallback/inputs/, or run after `load 1M17.pdb`.
 # Teacher demo only. Students reproduce the same views step by step.
 
 # ---------------------------------------------------------------
