@@ -22,7 +22,7 @@
 - 数据类型：RNA-Seq，分析流程 STAR - Counts（`*_star_gene_counts.tsv`），样本类型 Primary Tumor 与 Solid Tissue Normal，各取 15 例，来自不同患者（非配对设计）；
 - 突变数据：Masked Somatic Mutation（MAF，`gdc-2.0.0-aliquot-merged-masked`），按同一批肿瘤取全部 MAF 文件；
 - 选择规则写在 `fetch_tcga_luad.py --help` 与脚本注释里；`sample_manifest.csv` / `mutation_manifest.csv` 把 file_id 锁死，保证任何人重建得到同一批样本；
-- 30 例不是随机抽的：脚本在锁定 ml3xxxx 系列文件后手工剔除了 3 个过大/异常样本，最终这 30 例覆盖 15 个不同 TSS、包含 EGFR 激活突变（19del 与 L858R 各 1 例）。
+- 30 例不是随机抽的：在 TCGA-LUAD 的 STAR-Counts 文件里排除 3 个体积明显异常（23 KB~428 KB，正常约 4 MB）的文件后锁定 30 例，覆盖 15 个不同 TSS、包含 EGFR 激活突变（19del 与 L858R 各 1 例）。
 
 ## 为什么用真实数据
 
@@ -78,7 +78,7 @@ sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_pa
 | 可成药面板 | 247 个基因 |
 | 表达驱动候选（shortlist） | 78 个，top5：TERT、HTR3A、TOP2A、CDKN2A、SLC6A3（EGFR 不在其中） |
 | 突变驱动候选 | 9 个基因：TP53 8、KRAS 6、STK11 3、RET 2、KEAP1 2、EGFR 2、SMARCA4/PIK3CA/ROS1 各 1 例 |
-| GO BP 显著条目 | 1054（top：extracellular matrix organization，159 基因） |
+| GO BP 显著条目 | 1054（top：extracellular structure organization，159 基因；extracellular matrix organization 158） |
 | Reactome 显著条目 | 82（top：Extracellular matrix organization，138 基因） |
 | 数据缺口 | TCGA-05-4245-01A 无 MAF（14/15 例有突变数据）；MAF 不含扩增/融合 |
 
