@@ -1,0 +1,25 @@
+# Course 3 RFdiffusion target: EGFR domain III (PDB 1YY9 chain A, resi 310-480)
+# Epitope residues = 1YY9 A-chain residues within 4.5 A of cetuximab Fab (chains C/D).
+# Format below: PyMOL/RFdiffusion style "A<resi>" tokens, one per line, with residue name.
+A349 PRO
+A353 ARG
+A382 LEU
+A384 GLN
+A408 GLN
+A409 HIS
+A411 GLN
+A412 PHE
+A415 ALA
+A417 VAL
+A418 SER
+A438 ILE
+A440 SER
+A441 GLY
+A443 LYS
+A465 LYS
+A466 ILE
+A467 ILE
+A468 SER
+A469 ASN
+A471 GLY
+A473 ASN

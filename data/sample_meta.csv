@@ -1,0 +1,13 @@
+sample_id,condition,batch
+S01,Normal,B1
+S02,Normal,B1
+S03,Normal,B2
+S04,Normal,B2
+S05,Normal,B1
+S06,Normal,B2
+S07,Tumor,B1
+S08,Tumor,B1
+S09,Tumor,B2
+S10,Tumor,B2
+S11,Tumor,B1
+S12,Tumor,B2
