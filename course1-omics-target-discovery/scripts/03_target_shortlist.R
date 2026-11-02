@@ -25,8 +25,14 @@ for (p in c("dplyr", "readr")) {
 suppressPackageStartupMessages({ library(dplyr); library(readr) })
 
 # ---- 1. Load inputs ------------------------------------------------------------
-deg  <- read_csv(file.path(out_dir, "deg_table_all.csv"), show_col_types = FALSE)
-panel <- read_csv(file.path(data_dir, "druggable_panel.csv"), show_col_types = FALSE)
+deg_file <- file.path(out_dir, "deg_table_all.csv")
+if (!file.exists(deg_file))
+  stop("Missing ", deg_file, " - run 01_diff_analysis.R first (same <out_dir>)")
+panel_file <- file.path(data_dir, "druggable_panel.csv")
+if (!file.exists(panel_file))
+  stop("Missing ", panel_file, " - pass the course1 data dir as the first argument")
+deg  <- read_csv(deg_file, show_col_types = FALSE)
+panel <- read_csv(panel_file, show_col_types = FALSE)
 cat("Deg table:", nrow(deg), "| druggable panel:", nrow(panel), "genes\n")
 
 # ---- 2. Significant DEGs --------------------------------------------------------

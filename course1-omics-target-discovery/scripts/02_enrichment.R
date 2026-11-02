@@ -35,7 +35,10 @@ suppressPackageStartupMessages({
 })
 
 # ---- 1. Load DEG list (produced by 01_diff_analysis.R) ------------------------
-deg <- read_csv(file.path(out_dir, "deg_table_all.csv"), show_col_types = FALSE)
+deg_file <- file.path(out_dir, "deg_table_all.csv")
+if (!file.exists(deg_file))
+  stop("Missing ", deg_file, " - run 01_diff_analysis.R first (same <out_dir>)")
+deg <- read_csv(deg_file, show_col_types = FALSE)
 sig <- deg %>% filter(padj < 0.05, abs(log2FoldChange) > 1)
 cat("Using", nrow(sig), "significant DEGs for enrichment\n")
 
