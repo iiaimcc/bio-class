@@ -14,6 +14,7 @@
 | `mutation_matrix.csv` | 突变矩阵：14 例有 WXS 的肿瘤 × 14 个驱动基因（0/1） | 是 |
 | `sample_manifest.csv` | 30 个表达文件的 GDC file_id / md5 / 样本信息（下载脚本的输入清单） | 是 |
 | `mutation_manifest.csv` | 14 个 MAF 文件的 GDC file_id / md5 | 是 |
+| `driver_annotation.csv` | 14 个驱动基因的人工注释：亚细胞定位、获批药状态、可靶向的变异类型、本队列变异是否对得上 | 是 |
 | `fetch_tcga_luad.py` | 下载 + 校验 + 合并脚本（纯 Python 标准库，联网时重建全部文件） | 是 |
 
 ## 数据来源与选择规则
@@ -42,7 +43,7 @@ python3 fetch_tcga_luad.py --out . --cache ./gdc_cache --verify-only
 ```
 
 脚本对每个文件校验 md5（来自 manifest），全部通过后才合并 CSV；已下载且 md5 正确的文件会被缓存复用。
-`--verify-only` 只报告脚本重建的 5 个 CSV（expression / gene_annotation / sample_meta / mutation_status / mutation_matrix）；`druggable_panel.csv` 是人工整理的面板、两个 manifest 是输入清单，都不在重建范围内，用下面的 `sha256sum` 逐个人工核对。
+`--verify-only` 只报告脚本重建的 5 个 CSV（expression / gene_annotation / sample_meta / mutation_status / mutation_matrix）；`druggable_panel.csv` 与 `driver_annotation.csv` 是人工整理的面板/注释、两个 manifest 是输入清单，都不在重建范围内，用下面的 `sha256sum` 逐个人工核对。
 
 **发布版本校验值**（`sha256sum` 应得同一组值）：
 
@@ -56,10 +57,12 @@ python3 fetch_tcga_luad.py --out . --cache ./gdc_cache --verify-only
 | `mutation_matrix.csv` | `349412bd4b4f59e198ca8f7f4b352880b56862214314bf74fbacbe07527471b8` |
 | `sample_manifest.csv` | `98234d369cca5812523f21711fa135860d49409c06b3423d09379fbded30d1b4` |
 | `mutation_manifest.csv` | `cde2eeb3d544495c9d775d307d868457c3b392938cda7c04edf3ff610f38eefa` |
+| `driver_annotation.csv` | `2c183e2083fb8ebd1616e5ba6e85c8248c9d6a183a5c528079fe8fc8d1e245ab` |
 
 ```bash
 sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_panel.csv \
-          mutation_status.csv mutation_matrix.csv sample_manifest.csv mutation_manifest.csv
+          mutation_status.csv mutation_matrix.csv sample_manifest.csv mutation_manifest.csv \
+          driver_annotation.csv
 ```
 
 > 注意：改样本数、换样本或改注释版本都会改变输出和所有教学基准（DEG 数、富集条目数、候选数）。修改后必须重跑三份 R 脚本，并同步更新《实操手册》《教师准备清单》《讲义大纲》《教案》《课堂讲义》和 [docs/课程包自检结果.md](../docs/课程包自检结果.md) 中的数字。
@@ -80,6 +83,8 @@ sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_pa
 | 可成药面板 | 247 个基因 |
 | 表达驱动候选（shortlist） | 78 个，top5：TERT、HTR3A、TOP2A、CDKN2A、SLC6A3（EGFR 不在其中） |
 | 突变驱动候选 | 9 个基因：TP53 8、KRAS 6、STK11 3、RET 2、KEAP1 2、EGFR 2、SMARCA4/PIK3CA/ROS1 各 1 例 |
+| 四层证据漏斗 | 9（有突变）→ 6（可成药）→ 3（细胞表面）→ 1（变异类型匹配获批药）；表达候选与漏斗交集 0 |
+| 综合推荐（target_recommendation.csv） | EGFR，rank 1（RET/ROS1 的获批药针对融合、KRAS 位于细胞内，均在漏斗中被砍） |
 | GO BP 显著条目 | 1054（top：extracellular structure organization，159 基因；extracellular matrix organization 158） |
 | Reactome 显著条目 | 82（top：Extracellular matrix organization，138 基因） |
 | 数据缺口 | TCGA-05-4245-01A 无 MAF（14/15 例有突变数据）；MAF 不含扩增/融合 |
@@ -92,7 +97,7 @@ sha256sum expression_matrix.csv sample_meta.csv gene_annotation.csv druggable_pa
 
 1. 修改 `fetch_tcga_luad.py` 里的项目 ID（例如 `TCGA-HNSC`）与样本筛选条件，或直接换掉 `sample_manifest.csv` 里的 file_id；
 2. 调整 `druggable_panel.csv`（可按 Open Targets / DGIdb 重新整理面板类别）；
-3. 突变基因列表（脚本里的驱动基因白名单）按新主题调整；
+3. 突变基因列表（脚本里的驱动基因白名单）与 `driver_annotation.csv` 的定位/获批药注释按新主题调整；
 4. 重新生成数据后**务必重跑三份 R 脚本**，并按新的实测值更新所有文档中的基准数字（清单见上一节）。
 
 > 换主题会影响三课衔接：课程二/三的结构与设计案例围绕 EGFR，换主题时需要同时替换晶体结构（1M17/1YY9）与抗体案例。

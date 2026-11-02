@@ -16,13 +16,13 @@
 
 ```mermaid
 flowchart LR
-    A[课程一<br/>真实 TCGA-LUAD<br/>7283 DEG + 突变证据] --> B[候选靶点<br/>EGFR 等激酶]
+    A[课程一<br/>真实 TCGA-LUAD<br/>7283 DEG + 突变证据<br/>四层漏斗 → EGFR] --> B[候选靶点<br/>EGFR 等激酶]
     B --> C[课程二<br/>结构域/AlphaFold/PDB<br/>口袋与关键残基]
     C --> D[课程三<br/>大分子设计<br/>抗体复合物预测+突变]
     D --> E[综合大作业<br/>三课成果整合为<br/>大分子设计方案书]
 ```
 
-- 课程一用真实 TCGA-LUAD 子集（15 肿瘤 vs 15 癌旁）做差异表达 + 通路富集 + 突变证据整合；EGFR 的表达并不显著，它靠 2/15 例激活突变（19del、L858R）进入候选名单——这本身就是课程的关键判断训练；
+- 课程一用真实 TCGA-LUAD 子集（15 肿瘤 vs 15 癌旁）做差异表达 + 通路富集 + 突变证据整合；EGFR 的表达并不显著，它靠 2/15 例激活突变与"细胞表面 + 变异类型匹配获批药"两层过滤（19del、L858R）进入候选名单——这本身就是课程的关键判断训练；
 - 课程二对 EGFR 做序列注释、AlphaFold 结构评估、基于 PDB 结合模式的相互作用分析；
 - 课程三面向 EGFR 胞外 domain III：以西妥昔单抗-抗原结构 1YY9 提取表位约束 → 在线 RFdiffusion 生成 mini-protein backbone → ProteinMPNN 设计序列 → ColabFold/在线 Boltz 回折复核 → 写出实验验证计划（小分子对接不属本课）。
 

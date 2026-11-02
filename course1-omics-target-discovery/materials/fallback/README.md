@@ -8,13 +8,15 @@
 fallback/
 ├── README.md                 # 本文件：来源、校验值、使用规则
 ├── inputs/
-│   └── tcga_luad_subset.tar.gz   # 与 GDC 同源的 8 个数据文件（含 manifest）
+│   └── tcga_luad_subset.tar.gz   # 与 GDC 同源的 8 个数据文件（含 manifest）+ driver_annotation.csv
 └── expected/                 # 教师运行三个脚本后的参考输出
     ├── deg_symbols.txt               # 7283 个 DEG 的基因名（供 Enrichr 上传）
     ├── go_bp_enrichment.csv          # GO BP 富集结果（1054 条）
     ├── reactome_enrichment.csv       # Reactome 富集结果（82 条）
     ├── target_shortlist.csv          # 表达驱动候选（78 个）
     ├── mutation_driven_candidates.csv# 突变驱动候选（9 个基因）
+    ├── integrated_candidates.csv     # 四层漏斗逐层结果（9 行）
+    ├── target_recommendation.csv     # 四层全过的综合推荐（EGFR，rank 1）
     ├── volcano_plot.png
     ├── go_bp_dotplot.png
     └── reactome_dotplot.png
@@ -36,8 +38,9 @@ fallback/
 | `mutation_matrix.csv` | `349412bd4b4f59e198ca8f7f4b352880b56862214314bf74fbacbe07527471b8` |
 | `sample_manifest.csv` | `98234d369cca5812523f21711fa135860d49409c06b3423d09379fbded30d1b4` |
 | `mutation_manifest.csv` | `cde2eeb3d544495c9d775d307d868457c3b392938cda7c04edf3ff610f38eefa` |
+| `driver_annotation.csv` | `2c183e2083fb8ebd1616e5ba6e85c8248c9d6a183a5c528079fe8fc8d1e245ab` |
 
-压缩包本身：`69fb0f0d6a14d73e9787104ec7adafacd829dbcf6df8c0530e0227d4419bb758`（2.3 MB）。
+压缩包本身：`2dc675ea946d099d9eca32dcca0fe4b0a9a1b4fb42c13e7049f1ee42b504bf3f`（2.3 MB，含 9 个文件：8 个数据文件 + `driver_annotation.csv`）。
 
 与 `data/` 下的发布版逐字节一致；`python3 data/fetch_tcga_luad.py --verify-only` 可现场复核。
 

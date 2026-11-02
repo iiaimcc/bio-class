@@ -1,0 +1,15 @@
+symbol,compartment,approved_drug_status,targetable_alterations,observed_variants_targetable,note
+EGFR,cell_surface,approved_in_luad,activating_snv_or_indel,yes,RTK; exon 19 deletions and L858R are the textbook activating mutations and are drug targets in LUAD
+ERBB2,cell_surface,approved_in_luad,activating_snv_or_indel,yes,RTK; activating mutations and exon 20 insertions are targetable in LUAD (not seen in this cohort)
+MET,cell_surface,approved_in_luad,exon_skipping,no,RTK; the approved drugs act on exon 14 skipping, which a SNV/indel MAF does not reveal
+ALK,cell_surface,approved_in_luad,fusion,no,RTK; the approved drugs act on fusions, which a MAF does not reveal
+RET,cell_surface,approved_in_luad,fusion,no,RTK; the approved drugs act on fusions, so point mutations such as T350N do not make it actionable
+ROS1,cell_surface,approved_in_luad,fusion,no,RTK; same as RET: approved drugs act on fusions, not on point mutations
+KRAS,intracellular,approved_in_luad,activating_snv,no,GTPase; G12C inhibitors exist, but the observed G12C/G12S variants sit inside the cell where only small molecules reach
+BRAF,intracellular,approved_in_luad,activating_snv,no,kinase; V600E is targetable in LUAD, but no BRAF variant was seen in this cohort
+PIK3CA,intracellular,approved_in_other_cancers,hotspot_activating_snv,no,alpelisib is approved in breast cancer; the observed P104L is not a canonical hotspot
+TP53,nucleus,none,none,no,tumour suppressor; no approved drug restores it
+STK11,intracellular,none,none,no,kinase; no approved drug
+KEAP1,intracellular,none,none,no,no approved drug; loss activates NRF2 rather than creating a druggable site
+NF1,intracellular,none,none,no,no approved drug; loss acts through RAS/MAPK signalling
+SMARCA4,nucleus,none,none,no,chromatin remodeller; no approved drug
