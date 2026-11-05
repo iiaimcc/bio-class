@@ -17,7 +17,8 @@ via GUI buttons, but typing these in the PyMOL command line is faster.
 | Surface | `show surface, <sel>` ; `set transparency, 0.5` |
 | Label mapped residue | `label t790 and name CA, "T790 (1M17: T766)"`; `set label_size, 26` |
 | Align two structures | `align target_sel, reference_sel` (RMSD printed) |
-| B-factor (pLDDT) coloring | `spectrum b, blue_white_red, <sel>, minimum=0, maximum=100` |
+| pLDDT coloring (AlphaFold-style, 4 bins) | `color orange, <sel> and b<50` / `color yellow, <sel> and (b<70 and not b<50)` / `color skyblue, <sel> and (b<90 and not b<70)` / `color marine, <sel> and not b<90` |
+| B-factor ramp (注意方向) | `spectrum b, blue_white_red, <sel>, minimum=0, maximum=100`：**低值=蓝、高值=红**，与 AlphaFold 官网配色相反，用它时务必看色标 |
 | Save image | `png shot.png, dpi=300` |
 | Run a script | `@visual_egfr.pml` |
 | Reset view | `reset` |

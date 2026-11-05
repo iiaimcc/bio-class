@@ -28,7 +28,7 @@ AA = {
 }
 
 
-def get_json(url, tries=5):
+def get_json(url, tries=6):
     last = None
     for attempt in range(tries):
         try:
@@ -36,7 +36,7 @@ def get_json(url, tries=5):
                 return json.load(resp)
         except Exception as exc:  # NCBI returns 500 under load; retry with backoff
             last = exc
-            time.sleep(3 * (attempt + 1))
+            time.sleep(4 * (attempt + 1))
     raise RuntimeError(f"request failed after {tries} attempts: {last}")
 
 
@@ -130,7 +130,7 @@ def main():
         print(f"  lookup failed ({exc}); try again in a minute")
     if records is not None and not records:
         print("  no record for this protein change")
-    for rec in records:
+    for rec in records or []:
         print(f"  {rec['accession']} | {rec['title']}")
         print(f"    classification: {rec['classification']} ({rec['review_status']})")
         if rec["conditions"]:

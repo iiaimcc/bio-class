@@ -107,36 +107,62 @@ cat("Saved mutation_driven_candidates.csv:", nrow(mut_candidates), "mutated gene
 # rebuild the answer we already know and call it a discovery. They are printed
 # afterwards, as precedent, in section 6.
 #
-# Layer 2 comes from two sources. Truncating variants are settled by the MAF
-# itself (a destroyed protein cannot be switched on), so TP53 / STK11 / KEAP1
-# never need looking up. Everything else is a missense or in-frame change that
-# the MAF cannot interpret; those calls come from variant_calls.csv, filled in
-# by looking each variant up in ClinVar / CIViC (helper: data/lookup_variant.py).
-truncating_classes <- c("Nonsense_Mutation", "Frame_Shift_Del", "Frame_Shift_Ins",
-                        "Splice_Site", "Translation_Start_Site", "Nonstop_Mutation")
-truncating_genes <- variants %>%
-  filter(variant_class %in% truncating_classes) %>%
-  distinct(gene) %>%
-  pull(gene)
-
+# Layer 2 works at the variant level and only then rolls up to the gene, because
+# one gene can carry several variants with different consequences (TP53 here has
+# a nonsense variant in one tumour and DNA-binding-domain missense variants in
+# others). Truncating variants are settled by the MAF itself - a destroyed
+# protein cannot be switched on - and are auto-called. Splice-site, start-codon
+# and nonstop variants are deliberately NOT auto-called: their effect depends on
+# transcript and frame, or is not a truncation at all. Every other variant is
+# looked up by the student in ClinVar / CIViC (helper: data/lookup_variant.py)
+# and recorded in variant_calls.csv, one row per variant.
 calls_file <- if (length(args) >= 3) args[3] else file.path(out_dir, "variant_calls.csv")
 if (!file.exists(calls_file))
-  stop("Missing ", calls_file, " - fill in materials/templates/variant_calls_template.csv",
-       " (see materials/templates/README.md) and save it as ", calls_file)
+  stop("Missing ", calls_file, " - run data/make_variant_template.py, fill the ",
+       "needs_review rows (see materials/templates/README.md), and save the table there")
 calls <- read_csv(calls_file, show_col_types = FALSE)
-missing_calls <- setdiff(setdiff(mut_candidates$symbol, truncating_genes),
-                         unique(calls$symbol))
-if (length(missing_calls))
-  stop("variant_calls.csv has no rows for: ", paste(missing_calls, collapse = ", "))
+required <- c("symbol", "sample_id", "hgvsp", "variant_class",
+              "functional_consequence", "evidence_level", "evidence_source")
+if (!all(required %in% names(calls)))
+  stop("variant_calls.csv must have the columns: ", paste(required, collapse = ", "))
 
+calls <- calls %>% mutate(functional_consequence = tolower(functional_consequence))
+unresolved <- calls %>% filter(!functional_consequence %in%
+                                 c("gain_of_function", "loss_of_function", "uncertain"))
+if (nrow(unresolved))
+  stop("Unresolved calls in ", calls_file, ": ",
+       paste(unique(paste(unresolved$symbol, unresolved$hgvsp)), collapse = ", "),
+       " - look them up and replace needs_review with gain_of_function / loss_of_function / uncertain")
+
+observed <- variants %>% distinct(symbol = gene, hgvsp) %>% mutate(hgvsp = coalesce(hgvsp, ""))
+missing_rows <- anti_join(observed, calls %>% distinct(symbol, hgvsp), by = c("symbol", "hgvsp"))
+if (nrow(missing_rows))
+  stop("variant_calls.csv has no row for: ",
+       paste(paste(missing_rows$symbol, missing_rows$hgvsp), collapse = ", "))
+
+write_csv(calls, file.path(out_dir, "variant_function_summary.csv"))
+cat("Saved variant_function_summary.csv:", nrow(calls), "variant-level calls (",
+    sum(calls$functional_consequence == "gain_of_function"), "gain of function,",
+    sum(calls$functional_consequence == "loss_of_function"), "loss of function,",
+    sum(calls$functional_consequence == "uncertain"), "uncertain )\n")
+
+# Roll the variant calls up to the gene. A gene with gain-of-function evidence
+# AND loss-of-function evidence is reported as mixed rather than silently
+# resolved: the two point in opposite directions and the decision belongs in the
+# discussion, not in a default.
 call_summary <- calls %>%
   group_by(symbol) %>%
-  summarise(variant_function = case_when(
-              any(functional_call == "gain_of_function") ~ "gain_of_function",
-              any(functional_call == "loss_of_function") ~ "loss_of_function",
+  summarise(n_variants = n(),
+            n_gof = sum(functional_consequence == "gain_of_function"),
+            n_lof = sum(functional_consequence == "loss_of_function"),
+            n_uncertain = sum(functional_consequence == "uncertain"),
+            variant_function = case_when(
+              n_gof > 0 & n_lof > 0 ~ "mixed (gain and loss of function calls)",
+              n_gof > 0 ~ "gain_of_function",
+              n_lof > 0 ~ "loss_of_function",
               TRUE ~ "uncertain"),
             evidence_level = paste(sort(unique(evidence_level)), collapse = " / "),
-            variant_source = paste(unique(source), collapse = "; "),
+            variant_source = paste(sort(unique(evidence_source)), collapse = " ; "),
             .groups = "drop")
 
 context_file <- file.path(data_dir, "target_context.csv")
@@ -161,12 +187,9 @@ integrated <- mut_candidates %>%
          reachable_by_large_molecule = has_extracellular_domain == "yes") %>%
   arrange(desc(n_mutated), desc(gain_of_function), desc(log2FoldChange))
 
-# A truncating variant destroys the protein, so it settles layer 2 whatever the
-# looked-up calls say about the other variants of the same gene.
-integrated$variant_function[integrated$symbol %in% truncating_genes] <- "loss_of_function"
-integrated$evidence_level[integrated$symbol %in% truncating_genes] <-
-  "high (truncating variant, from the MAF)"
-integrated$gain_of_function <- integrated$variant_function == "gain_of_function"
+mixed_genes <- integrated %>% filter(grepl("^mixed", variant_function))
+if (nrow(mixed_genes))
+  cat("Note: mixed calls, review before use:", paste(mixed_genes$symbol, collapse = ", "), "\n")
 
 # Layer 3 encodes the modality we chose for course 3 (a designed mini-protein /
 # antibody-like binder), not a statement about target quality: an intracellular
@@ -174,7 +197,8 @@ integrated$gain_of_function <- integrated$variant_function == "gain_of_function"
 final <- integrated %>%
   filter(gain_of_function, reachable_by_large_molecule) %>%
   mutate(rank = row_number()) %>%
-  select(rank, symbol, variant_function, evidence_level, n_mutated, mutation_examples,
+  select(rank, symbol, variant_function, evidence_level, n_mutated, n_variants,
+         n_gof, n_lof, n_uncertain, mutation_examples,
          subcellular_location, deg_status, log2FoldChange, padj, baseMean,
          known_drug_class, variant_source)
 write_csv(integrated, file.path(out_dir, "integrated_candidates.csv"))
@@ -191,8 +215,9 @@ cat("  3. + reachable by a large molecule    :", nrow(final), "gene(s)\n")
 cat("  expression-driven shortlist overlap   :",
     sum(candidates$symbol %in% final$symbol), "genes\n")
 
-cat("\n---- Layer 2 how each gene was settled ----\n")
-print(integrated %>% select(symbol, variant_function, evidence_level))
+cat("\n---- Layer 2 how each gene was settled (variant calls rolled up) ----\n")
+print(integrated %>% select(symbol, n_variants, n_gof, n_lof, n_uncertain,
+                            variant_function, evidence_level), n = 20)
 
 cat("\n---- Not part of the funnel: what the same data looks like for the other modality ----\n")
 small_mol <- integrated %>% filter(gain_of_function, !reachable_by_large_molecule)
@@ -212,6 +237,11 @@ print(mut_candidates, n = 20)
 
 cat("\n===== Recommended target(s) after all three biology layers =====\n")
 print(final)
+
+cat("\n===== Variant-level calls behind layer 2 =====\n")
+print(calls %>% count(symbol, functional_consequence) %>%
+        tidyr::pivot_wider(names_from = functional_consequence, values_from = n,
+                           values_fill = 0), n = 20)
 
 cat("\n===== EGFR: the course target =====\n")
 print(deg %>% filter(symbol == "EGFR") %>%

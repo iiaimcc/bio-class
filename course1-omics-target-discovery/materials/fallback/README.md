@@ -11,11 +11,12 @@ fallback/
 │   └── tcga_luad_subset.tar.gz   # 与 GDC 同源的 8 个数据文件（含 manifest）+ target_context.csv + drug_precedent.csv
 └── expected/                 # 教师运行三个脚本后的参考输出
     ├── deg_symbols.txt               # 7283 个 DEG 的基因名（供 Enrichr 上传）
-    ├── go_bp_enrichment.csv          # GO BP 富集结果（1054 条）
-    ├── reactome_enrichment.csv       # Reactome 富集结果（82 条）
+    ├── go_bp_enrichment.csv          # GO BP 富集结果（613 条，背景集已显式设为过滤后基因）
+    ├── reactome_enrichment.csv       # Reactome 富集结果（119 条，背景集同上）
     ├── target_shortlist.csv          # 表达驱动候选（78 个）
     ├── mutation_driven_candidates.csv# 突变驱动候选（9 个基因）
-    ├── integrated_candidates.csv     # 三层漏斗逐层结果（9 行）
+    ├── integrated_candidates.csv     # 三层漏斗逐层结果（9 行，含变异级计数）
+    ├── variant_function_summary.csv  # 27 条变异级功能判定（9 GOF / 8 LOF / 10 未明）
     ├── target_recommendation.csv     # 三层全过的综合推荐（EGFR，rank 1）
     ├── volcano_plot.png
     ├── go_bp_dotplot.png

@@ -86,7 +86,7 @@ python3 annotate_targets.py .
 | 低表达过滤后（≥6 样本 counts≥10） | 23765 |
 | 显著 DEG（padj<0.05, \|log2FC\|>1） | 7283（上调 4355 / 下调 2928） |
 | EGFR 表达 | log2FC ≈ -0.21；padj ≈ 0.56（**不显著**） |
-| EGFR 突变 | 2/15 例激活突变：E746_A750del、L858R |
+| EGFR 突变 | 2/14 例有突变数据的肿瘤：E746_A750del、L858R（第 15 例无 WXS 文件，按未知处理） |
 | 可成药面板 | 247 个基因 |
 | 表达驱动候选（shortlist） | 78 个，top5：TERT、HTR3A、TOP2A、CDKN2A、SLC6A3（EGFR 不在其中） |
 | 突变驱动候选 | 9 个基因：TP53 8、KRAS 6、STK11 3、RET 2、KEAP1 2、EGFR 2、SMARCA4/PIK3CA/ROS1 各 1 例 |
@@ -102,8 +102,8 @@ python3 annotate_targets.py .
 | 药物格局（不参与筛选） | `drug_precedent.csv` + 可成药面板 | 人工参考，只在事后打印 |
 | 综合推荐（target_recommendation.csv） | EGFR，rank 1（TP53/STK11/KEAP1 为功能缺失；RET/ROS1/PIK3CA/SMARCA4 变异意义未明；KRAS 功能获得但位于细胞内） |
 | 对照分支（不进漏斗） | 同一份数据改做小分子，功能获得且位于胞内的答案是 KRAS（6/15）与 PIK3CA（1/15）。**药物上市情况与文献可得性只作事后佐证，不作筛选条件**，否则是循环论证 |
-| GO BP 显著条目 | 1054（top：extracellular structure organization，159 基因；extracellular matrix organization 158） |
-| Reactome 显著条目 | 82（top：Extracellular matrix organization，138 基因） |
+| GO BP 显著条目 | 613（背景集 universe = 过滤后实际检验的 23742 个符号 → 19492 个 Entrez；top：extracellular structure organization，159 基因；extracellular matrix organization 158） |
+| Reactome 显著条目 | 119（top：GPCR ligand binding，169 基因；其次 Extracellular matrix organization，138 基因） |
 | 数据缺口 | TCGA-05-4245-01A 无 MAF（14/15 例有突变数据）；MAF 不含扩增/融合 |
 
 > 上面每个值都由 `docs/课程包自检结果.md` 记录的运行环境实测得到；改动数据或脚本后必须重算。

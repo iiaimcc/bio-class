@@ -1,12 +1,28 @@
-symbol,variant,functional_call,evidence_level,source,note
-EGFR,p.E746_A750del,,,,
-EGFR,p.L858R,,,,
-KRAS,p.G12C,,,,
-KRAS,p.G12S,,,,
-KRAS,p.G12V,,,,
-KRAS,p.G12A,,,,
-RET,p.T350N,,,,
-RET,p.E901K,,,,
-ROS1,p.I1374F,,,,
-PIK3CA,p.P104L,,,,
-SMARCA4,p.E1362K,,,,
+symbol,sample_id,hgvsp,variant_class,functional_consequence,evidence_level,evidence_source
+EGFR,TCGA-49-4501-01A,p.E746_A750del,In_Frame_Del,needs_review,,in-frame deletion; effect not implied by the MAF
+EGFR,TCGA-97-8177-01A,p.L858R,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KEAP1,TCGA-91-6848-01A,p.D236N,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KRAS,TCGA-73-4677-01A,p.G12A,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KRAS,TCGA-49-4505-01A,p.G12C,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KRAS,TCGA-55-8615-01A,p.G12C,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KRAS,TCGA-55-7576-01A,p.G12S,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KRAS,TCGA-67-3773-01A,p.G12V,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KRAS,TCGA-78-7540-01A,p.G12V,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+PIK3CA,TCGA-97-8177-01A,p.P104L,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+RET,TCGA-91-6848-01A,p.E901K,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+RET,TCGA-49-4505-01A,p.T350N,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+ROS1,TCGA-86-6851-01A,p.I1374F,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+SMARCA4,TCGA-J2-A4AD-01A,p.E1362K,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+STK11,TCGA-62-A471-01A,p.S216F,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-49-4505-01A,p.C277F,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-J2-A4AD-01A,p.D57N,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-86-6851-01A,p.E258D,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-J2-A4AD-01A,p.N239D,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-91-6848-01A,p.R156P,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-86-7954-01A,p.R248L,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-78-7540-01A,p.R273C,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+TP53,TCGA-62-A471-01A,p.Y236C,Missense_Mutation,needs_review,,amino-acid substitution; effect not implied by the MAF
+KEAP1,TCGA-73-4677-01A,p.K287*,Nonsense_Mutation,loss_of_function,high,truncating variant (Nonsense_Mutation)
+STK11,TCGA-55-8615-01A,p.Q220*,Nonsense_Mutation,loss_of_function,high,truncating variant (Nonsense_Mutation)
+STK11,TCGA-73-4677-01A,p.Q37Pfs*123,Frame_Shift_Del,loss_of_function,high,truncating variant (Frame_Shift_Del)
+TP53,TCGA-55-7576-01A,p.Q317*,Nonsense_Mutation,loss_of_function,high,truncating variant (Nonsense_Mutation)

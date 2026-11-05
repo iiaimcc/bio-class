@@ -1,12 +1,28 @@
-symbol,variant,functional_call,evidence_level,source,note
-EGFR,p.E746_A750del,gain_of_function,high,"PMID 15118073; PMID 15118125; CIViC 1002 (SENSITIVITYRESPONSE levels C/D)","Exon 19 in-frame deletion; the canonical EGFR-TKI sensitivity event"
-EGFR,p.L858R,gain_of_function,high,"CIViC 33 (SENSITIVITYRESPONSE level A); ClinVar VCV000016609 (drug response, expert panel); PMID 15118073; PMID 15118125","Kinase-domain activating mutation; gefitinib response record"
-KRAS,p.G12C,gain_of_function,high,"CIViC 78 (SENSITIVITYRESPONSE level A); ClinVar VCV001701193 / VCV000012578","Codon-12 hotspot; FDA-approved G12C inhibitors exist"
-KRAS,p.G12S,gain_of_function,high,"CIViC 913 (RESISTANCE); ClinVar VCV000012584 (Pathogenic, multiple submitters)","Codon-12 hotspot; RASopathy classification is gain-of-function"
-KRAS,p.G12V,gain_of_function,high,"CIViC 425 (SENSITIVITYRESPONSE level B); ClinVar VCV000012583 (Pathogenic)","Codon-12 hotspot"
-KRAS,p.G12A,gain_of_function,high,"CIViC 148 (RESISTANCE); ClinVar VCV000045122 (Pathogenic/Likely pathogenic)","Codon-12 hotspot"
-PIK3CA,p.P104L,gain_of_function,moderate,"ClinVar VCV000217291 (Pathogenic/Likely pathogenic, 5 submitters, Cowden syndrome / PIK3CA-related disorder)","Evidence comes from the germline overgrowth context, which is a gain-of-function disease; it is not one of the somatic hotspots (E542K/E545K/H1047R), and CIViC has no record"
-RET,p.T350N,uncertain,none found,"ClinVar: no record for p.Thr350Asn (checked 2026-11-05); CIViC: no variant with this name","The neighbouring p.Thr350Ile is classified Uncertain significance; no functional evidence for this variant"
-RET,p.E901K,uncertain,none found,"ClinVar: no record for p.Glu901Lys; CIViC: no variant with this name","No functional evidence found"
-ROS1,p.I1374F,uncertain,none found,"ClinVar: no record for p.Ile1374Phe; CIViC: no variant with this name","No functional evidence found"
-SMARCA4,p.E1362K,uncertain,none found,"ClinVar: no record for p.Glu1362Lys; CIViC: no variant with this name","No functional evidence found"
+symbol,sample_id,hgvsp,variant_class,functional_consequence,evidence_level,evidence_source
+EGFR,TCGA-49-4501-01A,p.E746_A750del,In_Frame_Del,gain_of_function,high,CIViC 1002 (SENSITIVITYRESPONSE levels C/D); ClinVar VCV000163343 / VCV000177620 (lung adenocarcinoma); Lynch 2004 PMID 15118073; Paez 2004 PMID 15118125
+EGFR,TCGA-97-8177-01A,p.L858R,Missense_Mutation,gain_of_function,high,"CIViC 33 (SENSITIVITYRESPONSE level A); ClinVar VCV000016609 (drug response, reviewed by expert panel); Lynch 2004 PMID 15118073; Paez 2004 PMID 15118125"
+KEAP1,TCGA-91-6848-01A,p.D236N,Missense_Mutation,uncertain,none found,ClinVar: no record for p.Asp236Asn (checked 2026-11-05); CIViC: no variant with this name
+KEAP1,TCGA-73-4677-01A,p.K287*,Nonsense_Mutation,loss_of_function,high,"truncating variant (Nonsense_Mutation); stop gained, protein truncated"
+KRAS,TCGA-73-4677-01A,p.G12A,Missense_Mutation,gain_of_function,high,"CIViC 148 (RESISTANCE); ClinVar VCV000045122 (Pathogenic/Likely pathogenic, multiple submitters)"
+KRAS,TCGA-49-4505-01A,p.G12C,Missense_Mutation,gain_of_function,high,CIViC 78 (SENSITIVITYRESPONSE level A); ClinVar VCV001701193 / VCV000012578
+KRAS,TCGA-55-8615-01A,p.G12C,Missense_Mutation,gain_of_function,high,CIViC 78 (SENSITIVITYRESPONSE level A); ClinVar VCV001701193 / VCV000012578
+KRAS,TCGA-55-7576-01A,p.G12S,Missense_Mutation,gain_of_function,high,"CIViC 913 (RESISTANCE); ClinVar VCV000012584 (Pathogenic, multiple submitters)"
+KRAS,TCGA-67-3773-01A,p.G12V,Missense_Mutation,gain_of_function,high,CIViC 425 (SENSITIVITYRESPONSE level B); ClinVar VCV000012583 (Pathogenic)
+KRAS,TCGA-78-7540-01A,p.G12V,Missense_Mutation,gain_of_function,high,CIViC 425 (SENSITIVITYRESPONSE level B); ClinVar VCV000012583 (Pathogenic)
+PIK3CA,TCGA-97-8177-01A,p.P104L,Missense_Mutation,gain_of_function,moderate,"ClinVar VCV000217291 (Pathogenic/Likely pathogenic, 5 submitters, no conflicts; Cowden syndrome / PIK3CA-related disorder, a gain-of-function disease; chr3:179199136 matches this cohort). Not a somatic hotspot (E542K/E545K/H1047R) and CIViC has no record, so the evidence is context-dependent"
+RET,TCGA-91-6848-01A,p.E901K,Missense_Mutation,uncertain,none found,ClinVar: no record for p.Glu901Lys; CIViC: no variant with this name
+RET,TCGA-49-4505-01A,p.T350N,Missense_Mutation,uncertain,none found,ClinVar: no record for p.Thr350Asn (neighbouring p.Thr350Ile is Uncertain significance); CIViC: no variant with this name
+ROS1,TCGA-86-6851-01A,p.I1374F,Missense_Mutation,uncertain,none found,ClinVar: no record for p.Ile1374Phe; CIViC: no variant with this name
+SMARCA4,TCGA-J2-A4AD-01A,p.E1362K,Missense_Mutation,uncertain,none found,ClinVar: no record for p.Glu1362Lys; CIViC: no variant with this name
+STK11,TCGA-55-8615-01A,p.Q220*,Nonsense_Mutation,loss_of_function,high,"truncating variant (Nonsense_Mutation); stop gained, protein truncated"
+STK11,TCGA-73-4677-01A,p.Q37Pfs*123,Frame_Shift_Del,loss_of_function,high,"truncating variant (Frame_Shift_Del); frameshift, protein truncated"
+STK11,TCGA-62-A471-01A,p.S216F,Missense_Mutation,uncertain,moderate,"ClinVar VCV000376708 (Conflicting classifications of pathogenicity, germline context: Peutz-Jeghers syndrome); CIViC: no variant with this name"
+TP53,TCGA-49-4505-01A,p.C277F,Missense_Mutation,uncertain,moderate,ClinVar VCV000458567 (Conflicting classifications of pathogenicity; germline context Li-Fraumeni); CIViC: no accepted evidence
+TP53,TCGA-J2-A4AD-01A,p.D57N,Missense_Mutation,uncertain,none found,ClinVar: no record for p.Asp57Asn; CIViC: no variant with this name
+TP53,TCGA-86-6851-01A,p.E258D,Missense_Mutation,uncertain,moderate,ClinVar VCV001360091 (Conflicting classifications of pathogenicity); CIViC: no accepted evidence
+TP53,TCGA-J2-A4AD-01A,p.N239D,Missense_Mutation,uncertain,moderate,ClinVar VCV000234036 (Conflicting classifications of pathogenicity); CIViC 3394 has no accepted evidence
+TP53,TCGA-55-7576-01A,p.Q317*,Nonsense_Mutation,loss_of_function,high,"truncating variant (Nonsense_Mutation); stop gained, protein truncated"
+TP53,TCGA-91-6848-01A,p.R156P,Missense_Mutation,loss_of_function,moderate,"ClinVar VCV000634768 (Pathogenic/Likely pathogenic) + CIViC 3795 (FUNCTIONAL / DOMINANT_NEGATIVE level D). Damaged p53 function, not a gain of function"
+TP53,TCGA-86-7954-01A,p.R248L,Missense_Mutation,loss_of_function,high,"ClinVar VCV000230253 (Pathogenic, reviewed by expert panel; Li-Fraumeni). DNA-binding-domain hotspot: loss of transactivation"
+TP53,TCGA-78-7540-01A,p.R273C,Missense_Mutation,loss_of_function,high,"ClinVar VCV000043594 (Pathogenic/Likely pathogenic, multiple submitters) + CIViC R273C (FUNCTIONAL / DOMINANT_NEGATIVE level D; PREDICTIVE entries)"
+TP53,TCGA-62-A471-01A,p.Y236C,Missense_Mutation,loss_of_function,moderate,"ClinVar VCV000376693 (Pathogenic/Likely pathogenic, multiple submitters; Li-Fraumeni)"
