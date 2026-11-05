@@ -1,0 +1,16 @@
+# BoltzGen design spec: de novo mini-protein binder against EGFR domain III,
+# using the cetuximab epitope (PDB 1YY9 chain A) as the binding constraint.
+# binding: positions are 1-based indices within the included chain (resi 310-480).
+entities:
+  - protein:
+      id: B
+      sequence: 60..90
+  - file:
+      path: EGFR_DIII_1YY9.pdb
+      include:
+        - chain:
+            id: A
+      binding_types:
+        - chain:
+            id: A
+            binding: 40,44,73,75,99,100,102,103,106,108,109,129,131,132,134,156,157,158,159,160,162,164

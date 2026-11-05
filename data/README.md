@@ -19,6 +19,7 @@
 | `fetch_tcga_luad.py` | 下载 + 校验 + 合并脚本（纯 Python 标准库，联网时重建全部数据文件） | 是 |
 | `annotate_targets.py` | 向 UniProt 查询 14 个驱动基因的定位与拓扑结构，生成 `target_context.csv` | 是 |
 | `lookup_variant.py` | 把 MAF 的短写法换算成 HGVS，查 ClinVar 与 CIViC 并打印原始记录（只查不判读，判读是学生任务） | 是 |
+| `make_variant_template.py` | 从 `mutation_status.csv` 生成逐变异的 `variant_calls.csv` 骨架：截短变异自动判为功能缺失，其余标 `needs_review` 等学生查库填写 | 是 |
 
 ## 数据来源与选择规则
 

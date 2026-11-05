@@ -1,0 +1,31 @@
+# Boltz input template - EGFR DIII + Cetuximab VH/VL (course 3)
+# Sequences are taken from EGFR_cetuximab_序列.md (UniProt P00533 334-504; 1YY9 SEQRES VH/VL).
+# For the experimental reference structure 1YY9 the PDB chains are A=EGFR,
+# C=Fab light chain, D=Fab heavy chain. Boltz ids may be renamed consistently
+# in a new input; keep a written mapping to the PDB chains for alignment.
+# Run (cloud machine, GPU):
+#   conda activate app-boltz
+#   boltz predict boltz_egfr_cetuximab.yaml \
+#     --use_msa_server --recycling_steps 3 --diffusion_samples 5 \
+#     --max_parallel_samples 1 --output_format pdb --out_dir boltz_out
+version: 1
+# A=EGFR DIII, C=VL, D=VH; map back to PDB 1YY9 A/C/D before align.
+sequences:
+  - protein:
+      id: A
+      sequence: "RKVCNGIGIGEFKDSLSINATNIKHFKNCTSISGDLHILPVAFRGDSFTHTPPLDPQELDILKTVKEITGFLLIQAWPENRTDLHAFENLEIIRGRTKQHGQFSLAVVSLNITSLGLRSLKEISDGDVIISGNKNLCYANTINWKKLFGTSGQKTKIISNRGENSCKATGQ"
+      msa: /home/cluster1/caoji/zhesheng1/work/boltz_ref/msa/A.a3m
+  - protein:
+      id: C
+      sequence: "DILLTQSPVILSVSPGERVSFSCRASQSIGTNIHWYQQRTNGSPRLLIKYASESISGIPSRFSGSGSGTDFTLSINSVESEDIADYYCQQNNNWPTTFGAGTKLELK"
+      msa: /home/cluster1/caoji/zhesheng1/work/boltz_ref/msa/C.a3m
+  - protein:
+      id: D
+      sequence: "QVQLKQSGPGLVQPSQSLSITCTVSGFSLTNYGVHWVRQSPGKGLEWLGVIWSGGNTDYNTPFTSRLSINKDNSKSQVFFKMNSLQSNDTAIYYCARALTYYDYEFAYWGQGTLVTVSA"
+      msa: /home/cluster1/caoji/zhesheng1/work/boltz_ref/msa/D.a3m
+# ---------------------------------------------------------------------------
+# Student variant: copy this file, rename to mutant_<id>.yaml, and replace
+# the sequence of the mutated chain (e.g. one residue -> A).
+# Keep the same chain ids/order as the teacher's baseline run and record the
+# mapping to PDB 1YY9 (A/C/D) before using align in PyMOL.
+# ---------------------------------------------------------------------------

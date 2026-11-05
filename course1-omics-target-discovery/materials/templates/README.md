@@ -1,6 +1,13 @@
 # 变异功能标注（学生任务）
 
-`variant_calls_template.csv` 是空表，`variant_calls_reference.csv` 是教师填好的参考答案（含来源）。
+`variant_calls_reference.csv` 是教师填好的参考答案（含来源）。学生不直接用模板，而是先运行生成脚本，让脚本把能自动判的填好：
+
+```bash
+# 在 course1-omics-target-discovery/ 目录下
+python3 ../data/make_variant_template.py ../data ./results/variant_calls.csv
+```
+
+生成的表 27 行（每条非沉默变异一行）：4 条截短变异已自动判为 `loss_of_function`，其余 23 行是 `needs_review`。`variant_calls_template.csv` 与生成结果同构，留作离线时的对照。
 
 ## 为什么这一步不能自动做
 
@@ -8,7 +15,7 @@
 
 ## 怎么做
 
-1. 用现成脚本查两个数据库（只查、不下结论）：
+1. 对每一条 `needs_review`，用现成脚本查两个数据库（只查、不下结论）：
 
    ```bash
    # 在课程目录（course1-omics-target-discovery/）下运行：
