@@ -1,0 +1,12 @@
+symbol,variant,functional_call,evidence_level,source,note
+EGFR,p.E746_A750del,gain_of_function,high,"PMID 15118073; PMID 15118125; CIViC 1002 (SENSITIVITYRESPONSE levels C/D)","Exon 19 in-frame deletion; the canonical EGFR-TKI sensitivity event"
+EGFR,p.L858R,gain_of_function,high,"CIViC 33 (SENSITIVITYRESPONSE level A); ClinVar VCV000016609 (drug response, expert panel); PMID 15118073; PMID 15118125","Kinase-domain activating mutation; gefitinib response record"
+KRAS,p.G12C,gain_of_function,high,"CIViC 78 (SENSITIVITYRESPONSE level A); ClinVar VCV001701193 / VCV000012578","Codon-12 hotspot; FDA-approved G12C inhibitors exist"
+KRAS,p.G12S,gain_of_function,high,"CIViC 913 (RESISTANCE); ClinVar VCV000012584 (Pathogenic, multiple submitters)","Codon-12 hotspot; RASopathy classification is gain-of-function"
+KRAS,p.G12V,gain_of_function,high,"CIViC 425 (SENSITIVITYRESPONSE level B); ClinVar VCV000012583 (Pathogenic)","Codon-12 hotspot"
+KRAS,p.G12A,gain_of_function,high,"CIViC 148 (RESISTANCE); ClinVar VCV000045122 (Pathogenic/Likely pathogenic)","Codon-12 hotspot"
+PIK3CA,p.P104L,gain_of_function,moderate,"ClinVar VCV000217291 (Pathogenic/Likely pathogenic, 5 submitters, Cowden syndrome / PIK3CA-related disorder)","Evidence comes from the germline overgrowth context, which is a gain-of-function disease; it is not one of the somatic hotspots (E542K/E545K/H1047R), and CIViC has no record"
+RET,p.T350N,uncertain,none found,"ClinVar: no record for p.Thr350Asn (checked 2026-11-05); CIViC: no variant with this name","The neighbouring p.Thr350Ile is classified Uncertain significance; no functional evidence for this variant"
+RET,p.E901K,uncertain,none found,"ClinVar: no record for p.Glu901Lys; CIViC: no variant with this name","No functional evidence found"
+ROS1,p.I1374F,uncertain,none found,"ClinVar: no record for p.Ile1374Phe; CIViC: no variant with this name","No functional evidence found"
+SMARCA4,p.E1362K,uncertain,none found,"ClinVar: no record for p.Glu1362Lys; CIViC: no variant with this name","No functional evidence found"

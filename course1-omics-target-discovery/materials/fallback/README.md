@@ -8,7 +8,7 @@
 fallback/
 ├── README.md                 # 本文件：来源、校验值、使用规则
 ├── inputs/
-│   └── tcga_luad_subset.tar.gz   # 与 GDC 同源的 8 个数据文件（含 manifest）+ driver_annotation.csv
+│   └── tcga_luad_subset.tar.gz   # 与 GDC 同源的 8 个数据文件（含 manifest）+ target_context.csv + drug_precedent.csv
 └── expected/                 # 教师运行三个脚本后的参考输出
     ├── deg_symbols.txt               # 7283 个 DEG 的基因名（供 Enrichr 上传）
     ├── go_bp_enrichment.csv          # GO BP 富集结果（1054 条）
@@ -38,9 +38,10 @@ fallback/
 | `mutation_matrix.csv` | `349412bd4b4f59e198ca8f7f4b352880b56862214314bf74fbacbe07527471b8` |
 | `sample_manifest.csv` | `98234d369cca5812523f21711fa135860d49409c06b3423d09379fbded30d1b4` |
 | `mutation_manifest.csv` | `cde2eeb3d544495c9d775d307d868457c3b392938cda7c04edf3ff610f38eefa` |
-| `driver_annotation.csv` | `a47019098157dc0c57b44d97825ba84f6f89a681aff825a566d1f786a062be63` |
+| `target_context.csv` | `537960a9c51a73433265a56c7ea7525eea994dca578053c322e8efaf6db6c816` |
+| `drug_precedent.csv` | `d27e23d0af48140e4582b5ddebe2cecb89fe3b8bd7fcaf38945c9eac3719254f` |
 
-压缩包本身：`adfe4f2a92eae330177c31e32e2e3c3ac9ad95d1f4edd1a654da45c7cd93d383`（2.2 MB，含 9 个文件：8 个数据文件 + `driver_annotation.csv`）。
+压缩包本身：`846a4dfa9b7dc98b08e9ffcc0cb404db6bcc16d62afdc7d26031db24c740642`（2.2 MB，含 10 个文件：8 个数据文件 + `target_context.csv` + `drug_precedent.csv`）。
 
 与 `data/` 下的发布版逐字节一致；`python3 data/fetch_tcga_luad.py --verify-only` 可现场复核。
 
@@ -50,5 +51,12 @@ fallback/
    ```bash
    tar -xzf materials/fallback/inputs/tcga_luad_subset.tar.gz -C ./data
    ```
-2. `expected/` 只用于两处：教师快速批改；学生断网时对照判读（例如把 `deg_symbols.txt` 拖进网页版 Enrichr）。
-3. `expected/` 里的数字与 `data/README.md` 的教学基准一致；一旦数据或脚本改动，必须重跑并同步更新，不能只改一处。
+2. 变异功能表不在兜底包里：`variant_calls.csv` 是学生任务，断网时用 `materials/templates/variant_calls_reference.csv`（教师参考答案，含来源）核对，或按模板自查后填入。
+3. `expected/` 只用于两处：教师快速批改；学生断网时对照判读（例如把 `deg_symbols.txt` 拖进网页版 Enrichr）。教师复现基准的完整命令：
+
+   ```bash
+   Rscript scripts/01_diff_analysis.R ../data ./results_teacher
+   Rscript scripts/02_enrichment.R ./results_teacher ./results_teacher
+   Rscript scripts/03_target_shortlist.R ../data ./results_teacher ../materials/templates/variant_calls_reference.csv
+   ```
+4. `expected/` 里的数字与 `data/README.md` 的教学基准一致；一旦数据或脚本改动，必须重跑并同步更新，不能只改一处。

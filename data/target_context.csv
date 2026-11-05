@@ -1,0 +1,15 @@
+symbol,uniprot_accession,protein_name,subcellular_location,extracellular_domain,has_extracellular_domain,uniprot_release,source
+EGFR,P00533,Epidermal growth factor receptor,Cell membrane (Single-pass type I membrane protein); Endoplasmic reticulum membrane (Single-pass type I membrane protein); Endosome; Endosome membrane; Golgi apparatus membrane (Single-pass type I membrane protein); Nucleus; Nucleus membrane (Single-pass type I membrane protein); Secreted,Extracellular,yes,2026_04,https://rest.uniprot.org/uniprotkb/P00533/entry
+KRAS,P01116,GTPase KRas,Cell membrane (Lipid-anchor); Cytoplasm; Endomembrane system,none,no,2026_04,https://rest.uniprot.org/uniprotkb/P01116/entry
+TP53,P04637,Cellular tumor antigen p53,"Cytoplasm; Cytoplasm, cytoskeleton, microtubule organizing center, centrosome; Endoplasmic reticulum; Mitochondrion matrix; Nucleus; Nucleus, PML body",none,no,2026_04,https://rest.uniprot.org/uniprotkb/P04637/entry
+STK11,Q15831,Serine/threonine-protein kinase STK11,Cytoplasm; Late endosome; Membrane; Mitochondrion; Nucleus,none,no,2026_04,https://rest.uniprot.org/uniprotkb/Q15831/entry
+KEAP1,Q14145,Kelch-like ECH-associated protein 1,Cytoplasm; Nucleus,none,no,2026_04,https://rest.uniprot.org/uniprotkb/Q14145/entry
+BRAF,P15056,Serine/threonine-protein kinase B-raf,Cell membrane; Cytoplasm; Nucleus,none,no,2026_04,https://rest.uniprot.org/uniprotkb/P15056/entry
+PIK3CA,P42336,"Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha isoform",not annotated in UniProt,none,no,2026_04,https://rest.uniprot.org/uniprotkb/P42336/entry
+ERBB2,P04626,Receptor tyrosine-protein kinase erbB-2,"Cell membrane (Single-pass type I membrane protein); Cell projection, ruffle membrane (Single-pass type I membrane protein); Cytoplasm; Cytoplasm, perinuclear region; Early endosome; Nucleus",Extracellular,yes,2026_04,https://rest.uniprot.org/uniprotkb/P04626/entry
+ALK,Q9UM73,ALK tyrosine kinase receptor,Cell membrane (Single-pass type I membrane protein),Extracellular,yes,2026_04,https://rest.uniprot.org/uniprotkb/Q9UM73/entry
+RET,P07949,Proto-oncogene tyrosine-protein kinase receptor Ret,Cell membrane (Single-pass type I membrane protein); Endosome membrane (Single-pass type I membrane protein),Extracellular,yes,2026_04,https://rest.uniprot.org/uniprotkb/P07949/entry
+ROS1,P08922,Proto-oncogene tyrosine-protein kinase ROS,Cell membrane (Single-pass type I membrane protein),Extracellular,yes,2026_04,https://rest.uniprot.org/uniprotkb/P08922/entry
+MET,P08581,Hepatocyte growth factor receptor,Membrane (Single-pass type I membrane protein); Secreted,Extracellular,yes,2026_04,https://rest.uniprot.org/uniprotkb/P08581/entry
+NF1,P21359,Neurofibromin,"Cell membrane; Nucleus; Nucleus, nucleolus",none,no,2026_04,https://rest.uniprot.org/uniprotkb/P21359/entry
+SMARCA4,P51532,SWI/SNF-related matrix-associated actin-dependent regulator of chromatin subfamily A member 4,Nucleus,none,no,2026_04,https://rest.uniprot.org/uniprotkb/P51532/entry
