@@ -28,7 +28,7 @@
 
 > `binding:` 用的是**链内相对编号**（1–171），不是 PDB 编号（310–480）——这是学生最常踩的坑之一，课前要提醒。
 
-## 3. 选出的八个候选（4 成功 + 4 淘汰）
+## 3. 选出的八个候选（6 个计算上自洽 + 2 个淘汰案例）
 
 主档（60–90 aa）：
 
@@ -63,6 +63,14 @@
 | `interface_summary.json` / `interface_summary_main.json` | 界面残基与表位重叠的机器可读结果 |
 | `analyze_designs.py` / `analyze_main.py` | 复算脚本（PyMOL） |
 | `interface_long14.png` / `interface_main082.png` | 两个成功案例的界面图（灰=EGFR DIII，橙=binder，红=落在西妥昔单抗表位上的残基） |
+
+## 4b. 计数口径（与 candidate 表一致，勿再造"4+4"的说法）
+
+| 类别 | 数量 | 成员 |
+|---|---:|---|
+| 计算上自洽的成功案例（复折叠 RMSD < 1 Å 且界面可信） | 6 | main_082、main_078、main_020、long_14、long_29、long_86 |
+| 淘汰案例 | 2 | main_101（未落在表位）、long_99（复折叠失败） |
+| 合计 | 8 | — |
 
 ## 5. 课堂用法
 

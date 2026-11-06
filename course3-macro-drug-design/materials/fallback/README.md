@@ -6,7 +6,7 @@
 - `expected/`：任务卡 1 的参考输出（链事实、界面接触表、CDR 区间），以及 `design_out/`、`boltz_out/` 的**生成 runbook 与填写清单**。
 
 > **`design_out/` 与 `boltz_out/` 已经用实物填好**（2026-11-05 本机生成，见各自目录的 README）：
-> - `design_out/`：BoltzGen 0.1.2 生成的 4 个 backbone + 设计序列 + 复折叠复合物 + 全部 100 条设计的指标 + 界面复核（含 1 个成功案例与 1 个失败案例）；
+> - `design_out/`：BoltzGen 0.1.2 两次运行（长度 60–90 与 80–110）生成的 8 个 backbone + 8 条设计序列 + 8 个复折叠复合物 + 合计 **242 条**设计的指标 + 界面复核（6 个计算上自洽的成功案例、2 个不同原因的淘汰案例）；
 > - `boltz_out/`：Boltz-2 对 1YY9 参照复合物的复核（iptm 0.972、与实验结构叠合 RMSD 0.321 Å）。
 >
 > 两者都标注了工具、版本、参数与日期。第 4 节的 runbook 仍有意义：如果你希望课上让学生用**在线 RFdiffusion/ProteinMPNN** 跑出自己的产物，它就是那套步骤；本目录的实物用于"服务不可用/排队过久"时的兜底，以及课前预演比对。
@@ -72,16 +72,16 @@
 
 | runbook 步骤 | 状态 | 产物 |
 |---|---|---|
-| 4.1 backbone 生成 | ✅ 已完成（用 BoltzGen，而非在线 RFdiffusion） | `expected/design_out/backbones/design_long_{14,29,86,99}.cif` |
-| 4.2 序列设计 | ✅ 已完成 | `expected/design_out/sequence_candidates.csv`（4 条，含长度、ipTM、RMSD、表位重叠） |
-| 4.3 复折叠复核 | ✅ 已完成 | `expected/design_out/refolded/refold_long_*.cif` + `all_designs_metrics.csv`（100 条） |
+| 4.1 backbone 生成 | ✅ 已完成（用 BoltzGen，而非在线 RFdiffusion） | `expected/design_out/backbones/`：主档 4 个（`design_main_*`）+ 长档 4 个（`design_long_*`） |
+| 4.2 序列设计 | ✅ 已完成 | `expected/design_out/sequence_candidates.csv`（8 条，含长度、ipTM、RMSD、表位重叠） |
+| 4.3 复折叠复核 | ✅ 已完成 | `expected/design_out/refolded/`（8 个复合物）+ `all_designs_metrics_main.csv`（142 条，主档）+ `all_designs_metrics.csv`（100 条，长档） |
 | 4.4 cetuximab 参照复核 | ✅ 已完成 | `expected/boltz_out/`（iptm 0.972、叠合 RMSD 0.321 Å、界面 21/22 重合） |
 
 > 与在线 RFdiffusion/ProteinMPNN 的对应关系、以及"必须对学生说明工具不同"这一点，写在 `expected/design_out/README.md` 第 1 节。
 
 ### 4.6 自检（对照 runbook）
 
-- [x] `expected/design_out/` 有 ≥2 个 backbone、≥3 条序列、≥2 个回折结构，附参数与日期（现为 4 / 4 / 4）；
+- [x] `expected/design_out/` 有 ≥2 个 backbone、≥3 条序列、≥2 个回折结构，附参数与日期（现为 8 / 8 / 8，两个长度档）；
 - [x] `expected/boltz_out/` 有 iptm 数值与叠合图；
 - [x] 所有文件能追溯到具体工具版本与参数（见两个子目录 README 的运行记录）；
 - [x] 学生任务卡 2–4 的红灯路径能直接取用这些文件，且报告模板要求标注来源。

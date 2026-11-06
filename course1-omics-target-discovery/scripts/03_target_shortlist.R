@@ -134,11 +134,29 @@ if (nrow(unresolved))
        paste(unique(paste(unresolved$symbol, unresolved$hgvsp)), collapse = ", "),
        " - look them up and replace needs_review with gain_of_function / loss_of_function / uncertain")
 
-observed <- variants %>% distinct(symbol = gene, hgvsp) %>% mutate(hgvsp = coalesce(hgvsp, ""))
-missing_rows <- anti_join(observed, calls %>% distinct(symbol, hgvsp), by = c("symbol", "hgvsp"))
+# Match on the full record key: the same variant can recur in several patients
+# (KRAS p.G12C and p.G12V do here), so symbol+hgvsp alone would let a partially
+# filled table pass the check.
+observed <- variants %>%
+  distinct(symbol = gene, sample_id, hgvsp, variant_class) %>%
+  mutate(hgvsp = coalesce(hgvsp, ""))
+call_keys <- calls %>% distinct(symbol, sample_id, hgvsp, variant_class)
+missing_rows <- anti_join(observed, call_keys, by = c("symbol", "sample_id", "hgvsp", "variant_class"))
 if (nrow(missing_rows))
   stop("variant_calls.csv has no row for: ",
-       paste(paste(missing_rows$symbol, missing_rows$hgvsp), collapse = ", "))
+       paste(missing_rows$symbol, missing_rows$sample_id, missing_rows$hgvsp, sep = " / ", collapse = "; "))
+
+extra_rows <- anti_join(call_keys, observed, by = c("symbol", "sample_id", "hgvsp", "variant_class"))
+if (nrow(extra_rows))
+  stop("variant_calls.csv has rows that are not in mutation_status.csv: ",
+       paste(extra_rows$symbol, extra_rows$sample_id, extra_rows$hgvsp, sep = " / ", collapse = "; "))
+
+dup_rows <- calls %>%
+  count(symbol, sample_id, hgvsp, variant_class) %>%
+  filter(n > 1)
+if (nrow(dup_rows))
+  stop("variant_calls.csv has duplicate rows for the same record: ",
+       paste(dup_rows$symbol, dup_rows$sample_id, dup_rows$hgvsp, sep = " / ", collapse = "; "))
 
 write_csv(calls, file.path(out_dir, "variant_function_summary.csv"))
 cat("Saved variant_function_summary.csv:", nrow(calls), "variant-level calls (",
@@ -249,7 +267,8 @@ print(deg %>% filter(symbol == "EGFR") %>%
 print(mut_candidates %>% filter(symbol == "EGFR"))
 
 cat("\nEGFR is NOT among the expression-driven candidates. Here it is mutated in\n")
-cat("2/15 tumours, both textbook activating events (exon 19 deletion, L858R),\n")
+cat("2/14 tumours with mutation calls (the cohort has 15 tumours, one without a\n")
+cat("MAF file); both are textbook activating events (exon 19 deletion, L858R),\n")
 cat("and it sits on the cell surface. The expression shortlist and this funnel\n")
 cat("share no gene at all: that gap is the lesson, not a bug.\n")
 cat("KRAS and PIK3CA are switched on too, but they work inside the cell, so the\n")
