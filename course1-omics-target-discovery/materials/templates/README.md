@@ -54,7 +54,19 @@ python3 ../data/make_variant_template.py ../data ./results/variant_calls.csv
    CIViC 78 (SENSITIVITYRESPONSE level A); ClinVar VCV001701193 / VCV000012578
    ```
 
-4. 把表存成 `results/variant_calls.csv`，运行 `03_target_shortlist.R`（第三个参数省略时读这个文件）。脚本会检查：27 行是否齐全、是否有重复行、是否有不属于本队列的行，然后按基因汇总（`n_gof` / `n_lof` / `n_uncertain`；两类都有时标 `mixed`）。
+4. 把表存成 `results/variant_calls.csv`，运行 `03_target_shortlist.R`（第三个参数省略时读这个文件）。脚本会逐项检查并在报错里点名具体行：
+
+   | 检查 | 报错示例 |
+   |---|---|
+   | 必填列齐全 | `variant_calls.csv must have the columns: …` |
+   | `functional_consequence` 只能是三个允许值（不能留 `needs_review`） | `Unresolved calls in …: TP53 p.Q317*` |
+   | `evidence_level` 只能是 `high` / `moderate` / `none found` | `evidence_level must be one of: high, moderate, none found - fix these rows: …` |
+   | `evidence_source` 不能留空或占位符（`NA`、`-`、`tbd` 等） | `evidence_source must be filled for every row …` |
+   | 每条变异记录齐全（组合键 `symbol+sample_id+hgvsp+variant_class`） | `variant_calls.csv has no row for: KRAS / TCGA-55-8615-01A / p.G12C` |
+   | 没有重复行 | `variant_calls.csv has duplicate rows for the same record: …` |
+   | 没有不属于本队列的行 | `variant_calls.csv has rows that are not in mutation_status.csv: …` |
+
+   通过后按基因汇总（`n_gof` / `n_lof` / `n_uncertain`；两类都有时标 `mixed`）。
 
 ## 三条判读纪律
 

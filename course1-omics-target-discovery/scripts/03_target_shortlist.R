@@ -134,6 +134,22 @@ if (nrow(unresolved))
        paste(unique(paste(unresolved$symbol, unresolved$hgvsp)), collapse = ", "),
        " - look them up and replace needs_review with gain_of_function / loss_of_function / uncertain")
 
+allowed_levels <- c("high", "moderate", "none found")
+calls <- calls %>% mutate(evidence_level = trimws(tolower(evidence_level)))
+bad_level <- calls %>% filter(!evidence_level %in% allowed_levels)
+if (nrow(bad_level))
+  stop("evidence_level must be one of: ", paste(allowed_levels, collapse = ", "),
+       " - fix these rows: ",
+       paste(unique(paste(bad_level$symbol, bad_level$hgvsp)), collapse = ", "))
+
+placeholder_source <- c("", "na", "n/a", "-", "tbd", "todo", "needs_review")
+bad_source <- calls %>%
+  filter(is.na(evidence_source) | trimws(tolower(evidence_source)) %in% placeholder_source)
+if (nrow(bad_source))
+  stop("evidence_source must be filled for every row (ClinVar/CIViC/PMID, or a dated note that ",
+       "nothing was found) - fix these rows: ",
+       paste(unique(paste(bad_source$symbol, bad_source$hgvsp)), collapse = ", "))
+
 # Match on the full record key: the same variant can recur in several patients
 # (KRAS p.G12C and p.G12V do here), so symbol+hgvsp alone would let a partially
 # filled table pass the check.

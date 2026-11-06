@@ -101,7 +101,7 @@ python3 annotate_targets.py .
 | ② 变异把蛋白打开还是关掉 | 截短变异（无义/移码）→ 自动判为功能缺失；错义/框内变异 → 查 ClinVar 与 CIViC 后填 `variant_calls.csv` | 前半个脚本，后半个学生 |
 | ③ 蛋白是否有胞外域 | UniProt 拓扑结构域（`data/annotate_targets.py` 生成 `target_context.csv`） | 脚本 |
 | 药物格局（不参与筛选） | `drug_precedent.csv` + 可成药面板 | 人工参考，只在事后打印 |
-| 综合推荐（target_recommendation.csv） | EGFR，rank 1（TP53/STK11/KEAP1 为功能缺失；RET/ROS1/PIK3CA/SMARCA4 变异意义未明；KRAS 功能获得但位于细胞内） |
+| 综合推荐（target_recommendation.csv） | EGFR，rank 1（TP53/STK11/KEAP1 均检出功能缺失变异，判定以变异为单位：截短自动判、其余错义逐条查库；RET/ROS1/PIK3CA/SMARCA4 的变异为意义未明；KRAS 功能获得但位于细胞内） |
 | 对照分支（不进漏斗） | 同一份数据改做小分子，功能获得且位于胞内的答案是 KRAS（6/14 例有突变数据的肿瘤）与 PIK3CA（1/14）。**药物上市情况与文献可得性只作事后佐证，不作筛选条件**，否则是循环论证 |
 | GO BP 显著条目 | 613（背景集 universe = 过滤后实际检验的 23742 个符号 → 19492 个 Entrez；top：extracellular structure organization，159 基因；extracellular matrix organization 158） |
 | Reactome 显著条目 | 119（top：GPCR ligand binding，169 基因；其次 Extracellular matrix organization，138 基因） |
