@@ -1,0 +1,825 @@
+{
+  "design_long_14": {
+    "target_alignment_rmsd_angstrom": 0.091,
+    "interface_target_atoms": 63,
+    "interface_target_residues": [
+      325,
+      348,
+      349,
+      350,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      465,
+      467,
+      468
+    ],
+    "epitope_overlap": [
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      465,
+      467,
+      468
+    ],
+    "near_epitope_binder_atoms": 211,
+    "clash_binder_atoms": 2,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "10",
+          "resn": "PHE",
+          "atom": "CE2"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "408",
+          "resn": "GLN",
+          "atom": "OE1"
+        },
+        "distance_angstrom": 1.667
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "14",
+          "resn": "ASP",
+          "atom": "OD1"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.88
+      }
+    ],
+    "complex_clash_binder_atoms": 1,
+    "complex_clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "74",
+          "resn": "THR",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "B",
+          "resi": "44",
+          "resn": "ARG",
+          "atom": "NH2"
+        },
+        "distance_angstrom": 1.758
+      }
+    ]
+  },
+  "design_long_29": {
+    "target_alignment_rmsd_angstrom": 0.0875,
+    "interface_target_atoms": 62,
+    "interface_target_residues": [
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      465,
+      467,
+      468,
+      469,
+      471,
+      474
+    ],
+    "epitope_overlap": [
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      465,
+      467,
+      468,
+      469,
+      471
+    ],
+    "near_epitope_binder_atoms": 246,
+    "clash_binder_atoms": 4,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "45",
+          "resn": "TYR",
+          "atom": "CD2"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.777
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "45",
+          "resn": "TYR",
+          "atom": "CE2"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 0.89
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "45",
+          "resn": "TYR",
+          "atom": "CZ"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.633
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "80",
+          "resn": "LEU",
+          "atom": "CD1"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "408",
+          "resn": "GLN",
+          "atom": "OE1"
+        },
+        "distance_angstrom": 1.409
+      }
+    ],
+    "complex_clash_binder_atoms": 0,
+    "complex_clash_pairs": []
+  },
+  "design_long_86": {
+    "target_alignment_rmsd_angstrom": 0.2158,
+    "interface_target_atoms": 81,
+    "interface_target_residues": [
+      348,
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468,
+      469,
+      470,
+      471
+    ],
+    "epitope_overlap": [
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468,
+      469,
+      471
+    ],
+    "near_epitope_binder_atoms": 248,
+    "clash_binder_atoms": 5,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "27",
+          "resn": "ASP",
+          "atom": "OD2"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "443",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.697
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "72",
+          "resn": "GLY",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "384",
+          "resn": "GLN",
+          "atom": "OE1"
+        },
+        "distance_angstrom": 1.914
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "74",
+          "resn": "LEU",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "409",
+          "resn": "HIS",
+          "atom": "CD2"
+        },
+        "distance_angstrom": 1.999
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "74",
+          "resn": "LEU",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "409",
+          "resn": "HIS",
+          "atom": "NE2"
+        },
+        "distance_angstrom": 1.951
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "77",
+          "resn": "GLY",
+          "atom": "C"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.812
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "77",
+          "resn": "GLY",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.252
+      }
+    ],
+    "complex_clash_binder_atoms": 0,
+    "complex_clash_pairs": []
+  },
+  "design_long_99": {
+    "target_alignment_rmsd_angstrom": 0.2079,
+    "interface_target_atoms": 65,
+    "interface_target_residues": [
+      325,
+      348,
+      349,
+      350,
+      353,
+      384,
+      408,
+      409,
+      411,
+      412,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468
+    ],
+    "epitope_overlap": [
+      349,
+      353,
+      384,
+      408,
+      409,
+      411,
+      412,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468
+    ],
+    "near_epitope_binder_atoms": 229,
+    "clash_binder_atoms": 2,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "65",
+          "resn": "ALA",
+          "atom": "CA"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "411",
+          "resn": "GLN",
+          "atom": "OE1"
+        },
+        "distance_angstrom": 1.917
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "65",
+          "resn": "ALA",
+          "atom": "CB"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "411",
+          "resn": "GLN",
+          "atom": "CD"
+        },
+        "distance_angstrom": 1.962
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "65",
+          "resn": "ALA",
+          "atom": "CB"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "411",
+          "resn": "GLN",
+          "atom": "NE2"
+        },
+        "distance_angstrom": 1.149
+      }
+    ],
+    "complex_clash_binder_atoms": 0,
+    "complex_clash_pairs": []
+  },
+  "design_main_020": {
+    "target_alignment_rmsd_angstrom": 0.0884,
+    "interface_target_atoms": 68,
+    "interface_target_residues": [
+      325,
+      349,
+      350,
+      353,
+      355,
+      357,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      438,
+      440,
+      465,
+      467,
+      468
+    ],
+    "epitope_overlap": [
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      438,
+      440,
+      465,
+      467,
+      468
+    ],
+    "near_epitope_binder_atoms": 200,
+    "clash_binder_atoms": 1,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "31",
+          "resn": "ASP",
+          "atom": "OD2"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.662
+      }
+    ],
+    "complex_clash_binder_atoms": 0,
+    "complex_clash_pairs": []
+  },
+  "design_main_078": {
+    "target_alignment_rmsd_angstrom": 0.1037,
+    "interface_target_atoms": 58,
+    "interface_target_residues": [
+      349,
+      353,
+      382,
+      384,
+      388,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468
+    ],
+    "epitope_overlap": [
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      411,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468
+    ],
+    "near_epitope_binder_atoms": 219,
+    "clash_binder_atoms": 2,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "36",
+          "resn": "ASP",
+          "atom": "OD1"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "353",
+          "resn": "ARG",
+          "atom": "NH1"
+        },
+        "distance_angstrom": 1.87
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "36",
+          "resn": "ASP",
+          "atom": "OD2"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "353",
+          "resn": "ARG",
+          "atom": "NH1"
+        },
+        "distance_angstrom": 1.932
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "36",
+          "resn": "ASP",
+          "atom": "OD2"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "353",
+          "resn": "ARG",
+          "atom": "NH2"
+        },
+        "distance_angstrom": 1.738
+      }
+    ],
+    "complex_clash_binder_atoms": 0,
+    "complex_clash_pairs": []
+  },
+  "design_main_082": {
+    "target_alignment_rmsd_angstrom": 0.1961,
+    "interface_target_atoms": 87,
+    "interface_target_residues": [
+      325,
+      348,
+      349,
+      350,
+      382,
+      384,
+      408,
+      409,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      449,
+      454,
+      464,
+      465,
+      466,
+      467,
+      468,
+      469
+    ],
+    "epitope_overlap": [
+      349,
+      382,
+      384,
+      408,
+      409,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      465,
+      466,
+      467,
+      468,
+      469
+    ],
+    "near_epitope_binder_atoms": 240,
+    "clash_binder_atoms": 4,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "52",
+          "resn": "GLY",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "408",
+          "resn": "GLN",
+          "atom": "NE2"
+        },
+        "distance_angstrom": 1.819
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "54",
+          "resn": "LEU",
+          "atom": "N"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "409",
+          "resn": "HIS",
+          "atom": "NE2"
+        },
+        "distance_angstrom": 1.909
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "54",
+          "resn": "LEU",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "409",
+          "resn": "HIS",
+          "atom": "CD2"
+        },
+        "distance_angstrom": 1.746
+      },
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "56",
+          "resn": "VAL",
+          "atom": "CG1"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "465",
+          "resn": "LYS",
+          "atom": "NZ"
+        },
+        "distance_angstrom": 1.845
+      }
+    ],
+    "complex_clash_binder_atoms": 1,
+    "complex_clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "54",
+          "resn": "LEU",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "B",
+          "resi": "100",
+          "resn": "HIS",
+          "atom": "ND1"
+        },
+        "distance_angstrom": 1.889
+      }
+    ]
+  },
+  "design_main_101": {
+    "target_alignment_rmsd_angstrom": 0.1888,
+    "interface_target_atoms": 66,
+    "interface_target_residues": [
+      325,
+      348,
+      349,
+      350,
+      353,
+      355,
+      357,
+      382,
+      384,
+      408,
+      409,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468
+    ],
+    "epitope_overlap": [
+      349,
+      353,
+      382,
+      384,
+      408,
+      409,
+      412,
+      415,
+      417,
+      418,
+      438,
+      440,
+      441,
+      443,
+      465,
+      467,
+      468
+    ],
+    "near_epitope_binder_atoms": 199,
+    "clash_binder_atoms": 1,
+    "clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "66",
+          "resn": "SER",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "A",
+          "resi": "409",
+          "resn": "HIS",
+          "atom": "CD2"
+        },
+        "distance_angstrom": 1.984
+      }
+    ],
+    "complex_clash_binder_atoms": 1,
+    "complex_clash_pairs": [
+      {
+        "binder": {
+          "chain": "A",
+          "resi": "66",
+          "resn": "SER",
+          "atom": "O"
+        },
+        "target": {
+          "chain": "B",
+          "resi": "100",
+          "resn": "HIS",
+          "atom": "CD2"
+        },
+        "distance_angstrom": 1.981
+      }
+    ]
+  }
+}
